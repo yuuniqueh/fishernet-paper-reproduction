@@ -1,0 +1,41 @@
+seed: 42
+loss_reduction: valid_mean
+lr_descriptor_projection: 0.001
+fisher_lr_milestones: [20000, 30000]
+fisher_lr_gamma: 0.1
+device: cuda
+dataset_root: ../04_dataset/VOC/VOCdevkit
+dataset: voc2007
+backbone: alexnet
+model_variant: spp
+pretrained_backbone: true
+num_classes: 20
+descriptor_dim: 256
+num_components: 32
+batch_size: 2
+fisher_micro_batch_size: 1
+fisher_gradient_accumulation_steps: 2
+evaluation_batch_size: 1
+whole_image_batch_size: 32
+num_workers: 2
+whole_image_steps: 9000
+whole_image_lr_new: 0.01
+whole_image_lr_backbone: 0.001
+whole_image_lr_step: 3000
+whole_image_save_every: 500
+fisher_steps: 40000
+fisher_save_every: 500
+lr_fisher: 0.1
+lr_classifier: 0.001
+lr_backbone: 0.0001
+momentum: 0.9
+weight_decay: 0.0005
+patch_scales: [64, 96, 128, 160, 192, 224, 256]
+patch_step: 32
+max_patches: null
+# Paper §4.1: resize longest side to one of these values, retaining aspect ratio.
+image_scales: [480, 576, 688, 864, 1200]
+svm_C: 1.0
+gmm_max_images: 1000
+gmm_max_descriptors: 100000
+gmm_max_iter: 200

@@ -1,0 +1,43 @@
+{
+  "ap_protocol": "VOC2007 11-point interpolated AP",
+  "historical_best": {
+    "configuration": "configs/voc2007_alexnet.yaml",
+    "training_steps": 40000,
+    "training_split": "trainval",
+    "evaluation_split": "test",
+    "images": 4952,
+    "mAP": 0.78215767593848,
+    "per_class_AP": {
+      "aeroplane": 0.8911546852705271,
+      "bicycle": 0.8499652236890971,
+      "bird": 0.8793347444566137,
+      "boat": 0.8525342409460819,
+      "bottle": 0.4915623757071304,
+      "bus": 0.7255547410105099,
+      "car": 0.8909411802892309,
+      "cat": 0.8552790247709017,
+      "chair": 0.6625278428634002,
+      "cow": 0.6350282943997181,
+      "diningtable": 0.730311724908507,
+      "dog": 0.8415556726010663,
+      "horse": 0.8734812189474873,
+      "motorbike": 0.8512225733495797,
+      "person": 0.9381049704067681,
+      "pottedplant": 0.6073115084704684,
+      "sheep": 0.7551706063488711,
+      "sofa": 0.6722550267545084,
+      "train": 0.8907665174906196,
+      "tvmonitor": 0.7490913460885131
+    }
+  },
+  "independent_validation": {
+    "training_steps": 40000,
+    "training_split": "train",
+    "evaluation_split": "val",
+    "training_images": 2501,
+    "images": 2510,
+    "mAP": 0.7229052203597639,
+    "svm_C": 1,
+    "svm_all_converged": true
+  }
+}

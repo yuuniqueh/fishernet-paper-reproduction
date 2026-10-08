@@ -1,0 +1,36 @@
+# Only the implementation, configurations, tests and curated reports are published.
+/01_paper_materials/
+/02_original_code/
+/04_dataset/
+/05_results/
+/新建文件夹/
+/03_my_reproduction/checkpoints/
+/03_my_reproduction/datasets/
+**/.venv/
+**/venv/
+**/__pycache__/
+**/.pytest_cache/
+**/.submission-test-tmp-*/
+**/.idea/
+**/.vscode/
+*.py[cod]
+*.pt
+*.pth
+*.caffemodel
+*.npz
+*.npy
+*.tar
+*.tar.gz
+*.zip
+*.log
+*.jsonl
+*.tmp
+*.partial
+.env
+.env.*
+*.pem
+*.key
+# Machine-specific monitoring records stay local; the submission report summarizes them.
+/03_my_reproduction/docs/performance_recovery_20261004.md
+/03_my_reproduction/docs/preparation_progress.md
+/03_my_reproduction/docs/automatic_preparation.md
