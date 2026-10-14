@@ -7,6 +7,9 @@
 /03_my_reproduction/checkpoints/
 /03_my_reproduction/datasets/
 **/.venv/
+**/.deps/
+**/.model-cache/
+**/configs/*.local.yaml
 **/venv/
 **/__pycache__/
 **/.pytest_cache/

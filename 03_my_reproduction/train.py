@@ -14,8 +14,7 @@ from src.training import (read_config, masked_sigmoid_loss, build_optimizer,
                           assert_whole_source_loss_compatible, training_split,
                           assert_initialization_split_compatible)
 from src.voc_dataset import RandomFisherNetTransform, VOCMultiLabel
-from models.fishernet import FisherNetAlexNet
-from models.fishernet_spp import FisherNetSPPAlexNet
+from models.factory import build_model
 from src.training_diagnostics import TrainingDiagnostics
 from src.guarded_fisher import FisherMemory, maximum_geometry_dataset
 
@@ -100,33 +99,17 @@ def run_training(args, project_root, cfg, memory):
     torch.manual_seed(cfg["seed"])
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(cfg["seed"])
-    if cfg["backbone"] != "alexnet":
-        raise NotImplementedError("The first runnable stage currently implements AlexNet only.")
     variant = cfg.get("model_variant", "dense")
-    if variant == "dense":
-        model = FisherNetAlexNet(
-            num_classes=cfg["num_classes"],
-            descriptor_dim=cfg["descriptor_dim"],
-            num_components=cfg["num_components"],
-            pretrained_backbone=cfg.get("pretrained_backbone", False) and not (args.init_checkpoint or args.resume),
-        ).to(device)
-    elif variant == "spp":
-        max_patches = args.max_patches if args.max_patches is not None else cfg.get("max_patches")
-        model = FisherNetSPPAlexNet(
-            num_classes=cfg["num_classes"],
-            descriptor_dim=cfg["descriptor_dim"],
-            num_components=cfg["num_components"],
-            patch_sizes=tuple(cfg["patch_scales"]),
-            patch_step=cfg["patch_step"],
-            max_patches=max_patches,
-            patch_coordinate_mode=cfg.get("patch_coordinate_mode", "resized"),
-            roi_coordinate_mapping=cfg.get("roi_coordinate_mapping", "legacy_ratio"),
-            pretrained_backbone=cfg.get("pretrained_backbone", False) and not (args.init_checkpoint or args.resume),
-            fc_dropout=cfg.get("fc_dropout", False),
-            new_layer_init_std=cfg.get("new_layer_init_std"),
-        ).to(device)
-    else:
-        raise ValueError(f"unknown model_variant: {variant}")
+    if cfg["backbone"] != "alexnet" and (args.init_checkpoint or args.resume):
+        source = torch.load(project_root / (args.init_checkpoint or args.resume),
+                            map_location="cpu", weights_only=False, mmap=True)
+        assert_model_compatible(source, cfg)
+        cfg["backbone_config"] = source["config"].get("backbone_config")
+        del source
+    model = build_model(
+        cfg, pretrained=cfg.get("pretrained_backbone", False)
+        and not (args.init_checkpoint or args.resume),
+    ).to(device)
     print(f"model={variant}; max_patches={getattr(model, 'max_patches', 'n/a')}")
     opt, scheduler, contract = build_optimizer(model, cfg, "fisher")
     print(f"loss_reduction={contract['loss_reduction']}; lr_groups="

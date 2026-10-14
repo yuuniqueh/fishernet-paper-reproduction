@@ -19,13 +19,15 @@ def file_sha256(path):
 def descriptor_metadata(checkpoint_path, cfg, max_images, max_descriptors):
     keys = ("seed", "descriptor_dim", "patch_scales", "patch_step", "max_patches",
             "patch_coordinate_mode", "roi_coordinate_mapping", "image_scales",
-            "fc_dropout", "new_layer_init_std")
+            "fc_dropout", "new_layer_init_std", "backbone", "backbone_model_name", "backbone_config",
+            "backbone_backend", "backbone_arch")
     return {
         "schema_version": 1,
         "source_checkpoint": str(Path(checkpoint_path).resolve()),
         "source_sha256": file_sha256(checkpoint_path),
         "extractor_sources": {name: file_sha256(Path(__file__).resolve().parents[1] / name)
-                              for name in ("models/fishernet_spp.py", "src/patches.py", "src/voc_dataset.py")},
+                              for name in ("models/fishernet_spp.py", "models/factory.py",
+                                           "models/modern_backbone.py", "src/patches.py", "src/voc_dataset.py")},
         "runtime": {name: version(name) for name in ("torch", "torchvision")},
         "feature_config": {key: cfg.get(key) for key in keys},
         "dataset_root": cfg["dataset_root"],

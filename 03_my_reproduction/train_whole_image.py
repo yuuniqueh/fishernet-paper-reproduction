@@ -8,10 +8,10 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 from src.training import (read_config, masked_sigmoid_loss, build_optimizer,
-                          assert_resume_compatible, protect_output, checked_loss_value, ensure_finite_gradients,
+                          assert_resume_compatible, assert_model_compatible, protect_output, checked_loss_value, ensure_finite_gradients,
                           ensure_finite_checkpoint_state, training_split)
 
-from models.whole_image import WholeImageAlexNet
+from models.factory import build_model
 from src.voc_dataset import VOCMultiLabel, whole_image_finetune_transform
 from src.guarded_memory import WholeImageMemory
 
@@ -66,13 +66,12 @@ def run_training(args, cfg, project_root, memory):
         shuffle=True,
         num_workers=cfg["num_workers"],
     )
-    model = WholeImageAlexNet(
-        num_classes=cfg["num_classes"],
-        descriptor_dim=cfg["descriptor_dim"],
-        pretrained=cfg["pretrained_backbone"] and not args.resume,
-        fc_dropout=cfg.get("fc_dropout", False),
-        new_layer_init_std=cfg.get("new_layer_init_std"),
-    ).to(device)
+    if cfg["backbone"] != "alexnet" and args.resume:
+        source = torch.load(project_root / args.resume, map_location="cpu", weights_only=False, mmap=True)
+        assert_model_compatible(source, cfg, whole_image=True)
+        cfg["backbone_config"] = source["config"].get("backbone_config")
+        del source
+    model = build_model(cfg, "whole_image", pretrained=cfg["pretrained_backbone"] and not args.resume).to(device)
     optimizer, scheduler, contract = build_optimizer(model, cfg, "whole_image")
     print(f"loss_reduction={contract['loss_reduction']}; lr_groups="
           f"{[(group['name'], group['lr']) for group in optimizer.param_groups]}", flush=True)

@@ -28,7 +28,10 @@
       "sofa": 0.6722550267545084,
       "train": 0.8907665174906196,
       "tvmonitor": 0.7490913460885131
-    }
+    },
+    "backbone": "alexnet",
+    "interpretation": "Historical AlexNet trainval/test baseline; not the best result across different evaluation protocols.",
+    "effective_settings_note": "Historical implementation: valid_mean loss, default new-layer initialization, descriptor projection LR 0.001, Fisher LR 0.1, 20k/30k decay; not a strict reproduction of every paper setting."
   },
   "independent_validation": {
     "training_steps": 40000,
@@ -38,6 +41,406 @@
     "images": 2510,
     "mAP": 0.7229052203597639,
     "svm_C": 1,
-    "svm_all_converged": true
+    "svm_all_converged": true,
+    "backbone": "alexnet",
+    "effective_settings_note": "This later AlexNet run used batch_sum loss, Gaussian std 0.01 new layers, descriptor projection LR 0.0001 and half_open_ratio SPP mapping; it differs from the historical test baseline in more than data split."
+  },
+  "schema_version": 2,
+  "updated_at": "2026-10-14",
+  "scope": "VOC2007 image multi-label classification; distinguish trainval/test, train/val, frozen features and end-to-end FisherNet.",
+  "frozen_backbone_validation": {
+    "source_report": "backbone_trials_20261011.json",
+    "training_split": "train",
+    "evaluation_split": "val",
+    "training_images": 2501,
+    "evaluation_images": 2510,
+    "backbone_finetuned": false,
+    "image_size": [
+      224,
+      224
+    ],
+    "pca_dim": 64,
+    "num_components": 16,
+    "models": {
+      "dinov2": {
+        "global_svm_mAP": 0.8936906553077721,
+        "fisher_svm_mAP": 0.879950541777949
+      },
+      "dinov3": {
+        "global_svm_mAP": 0.886833613620859,
+        "fisher_svm_mAP": 0.8526556981152831
+      }
+    }
+  },
+  "dinov3_short_finetune_validation": {
+    "source_report": "dinov3_finetune_20261011.json",
+    "backbone": "dinov3_vits16",
+    "backbone_frozen": false,
+    "training_split": "train",
+    "evaluation_split": "val",
+    "whole_image_steps": 1500,
+    "fisher_steps": 5000,
+    "initialized_fisher_svm_mAP": 0.868150525559594,
+    "trained_fisher_svm_mAP": 0.8630469784743287,
+    "trained_fisher_head_mAP": 0.6360478546038153
+  },
+  "dinov3_full_budget_validation": {
+    "source_report": "dinov3_40000_20261011.json",
+    "status": "completed",
+    "backbone": "dinov3_vits16",
+    "backbone_frozen": false,
+    "training_split": "train",
+    "evaluation_split": "val",
+    "training_images": 2501,
+    "evaluation_images": 2510,
+    "test_used": false,
+    "whole_image_steps": 9000,
+    "fisher_steps": 40000,
+    "protocol": "two-scale Fisher + linear SVM",
+    "image_scales": [
+      224,
+      336
+    ],
+    "descriptor_dim": 256,
+    "num_components": 32,
+    "svm_C": 1,
+    "final_mAP": 0.8724336462024682,
+    "per_class_AP": {
+      "aeroplane": 0.9907645730922593,
+      "bicycle": 0.870082403936875,
+      "bird": 0.911614940286121,
+      "boat": 0.9012242517182313,
+      "bottle": 0.6775292047514522,
+      "bus": 0.8948363606053028,
+      "car": 0.9394920454035031,
+      "cat": 0.91469802645247,
+      "chair": 0.8080039777797303,
+      "cow": 0.8095473489166579,
+      "diningtable": 0.8223896032555849,
+      "dog": 0.9099368048289331,
+      "horse": 0.8976699393341449,
+      "motorbike": 0.9220571064439483,
+      "person": 0.9415028087685997,
+      "pottedplant": 0.713304596125934,
+      "sheep": 0.8390667967341655,
+      "sofa": 0.841238003517367,
+      "train": 0.9954045954045955,
+      "tvmonitor": 0.8483095366934891
+    },
+    "best_observed_validation_checkpoint": {
+      "fisher_steps": 10000,
+      "validation_mAP": 0.8728527779875975
+    },
+    "final_single_crop_head_mAP": 0.8192352580553871,
+    "curve": [
+      {
+        "fisher_steps": 0,
+        "validation_mAP": 0.8524477143610545
+      },
+      {
+        "fisher_steps": 5000,
+        "validation_mAP": 0.870819841330726
+      },
+      {
+        "fisher_steps": 10000,
+        "validation_mAP": 0.8728527779875975
+      },
+      {
+        "fisher_steps": 20000,
+        "validation_mAP": 0.8725266548440572
+      },
+      {
+        "fisher_steps": 30000,
+        "validation_mAP": 0.8725780996611897
+      },
+      {
+        "fisher_steps": 40000,
+        "validation_mAP": 0.8724336462024682
+      }
+    ],
+    "svm_all_converged": true,
+    "final_minus_initialized_pp": 1.9985931841413729,
+    "final_minus_same_run_5000_pp": 0.16138048717422304,
+    "training_seed": 42,
+    "number_of_training_seeds": 1
+  },
+  "backbone_implementation_status": {
+    "alexnet": "implemented; trainval/test and train/val experiments completed",
+    "dinov2": "implemented; frozen probe, full-budget train/val and independent trainval/test completed",
+    "dinov3": "implemented; frozen probe, short/full-budget train/val and independent trainval/test completed",
+    "resnet50": "implemented and covered by code tests; no formal accuracy experiment reported"
+  },
+  "comparison_limits": [
+    "Do not rank train/val and trainval/test scores together.",
+    "Frozen global SVM, frozen PCA/Fisher/SVM, trained Fisher/SVM and classification-head scores use different inference protocols.",
+    "AlexNet and DINOv3 also differ in pretraining data, descriptors, image scales and module learning rates; this is not a backbone-only ablation.",
+    "DINOv3 best observed validation checkpoint is distinct from the final checkpoint; both DINOv2 and DINOv3 trainval/test experiments are complete.",
+    "Single training seed; paired validation-image bootstrap does not measure training-seed variation."
+  ],
+  "backbone_comparison_20261013": {
+    "source_report": "backbone_comparison_20261013.json",
+    "primary_test": {
+      "dinov2": {
+        "mAP": 0.8996765061005476,
+        "whole_image_steps": 9000,
+        "fisher_steps": 40000,
+        "training_split": "trainval",
+        "evaluation_split": "test",
+        "per_class_AP": {
+          "aeroplane": 0.9926289926289926,
+          "bicycle": 0.9150329015553638,
+          "bird": 0.9175797712221553,
+          "boat": 0.9128176686244726,
+          "bottle": 0.7718060582373659,
+          "bus": 0.8987577801618764,
+          "car": 0.9222406789868391,
+          "cat": 0.9159808530360376,
+          "chair": 0.8257564272527873,
+          "cow": 0.8863957335564348,
+          "diningtable": 0.8937542189053929,
+          "dog": 0.9124277996441428,
+          "horse": 0.9289684351014373,
+          "motorbike": 0.9178479827382648,
+          "person": 0.9527069323390568,
+          "pottedplant": 0.8137280241798799,
+          "sheep": 0.9442233623495379,
+          "sofa": 0.8484679727346877,
+          "train": 0.9273613158935343,
+          "tvmonitor": 0.8950472128626914
+        }
+      },
+      "dinov3": {
+        "mAP": 0.8766839552361786,
+        "whole_image_steps": 9000,
+        "fisher_steps": 40000,
+        "training_split": "trainval",
+        "evaluation_split": "test",
+        "per_class_AP": {
+          "aeroplane": 0.9405772495755518,
+          "bicycle": 0.9135165687152622,
+          "bird": 0.9148284855653227,
+          "boat": 0.9093119019381072,
+          "bottle": 0.6634523486336712,
+          "bus": 0.9003692647573835,
+          "car": 0.9194142453209875,
+          "cat": 0.9116315118220093,
+          "chair": 0.7998377561168764,
+          "cow": 0.8552185256486248,
+          "diningtable": 0.863024025136205,
+          "dog": 0.9127286533278801,
+          "horse": 0.9159482943649248,
+          "motorbike": 0.9027709351372568,
+          "person": 0.9448499858823602,
+          "pottedplant": 0.7488763603713202,
+          "sheep": 0.8799720591405386,
+          "sofa": 0.8580560105168413,
+          "train": 0.9156696893494882,
+          "tvmonitor": 0.8636252334029616
+        }
+      }
+    },
+    "initialized_test_controls": {
+      "dinov2": {
+        "mAP": 0.8939540513948729,
+        "whole_image_steps": 9000,
+        "fisher_steps": 0,
+        "training_split": "trainval",
+        "evaluation_split": "test",
+        "per_class_AP": {
+          "aeroplane": 0.9126881307666991,
+          "bicycle": 0.9178915690258321,
+          "bird": 0.9126444286565047,
+          "boat": 0.9093929716929986,
+          "bottle": 0.7444173274781902,
+          "bus": 0.892456474281722,
+          "car": 0.9194718165391969,
+          "cat": 0.9104843360760175,
+          "chair": 0.8239370603676609,
+          "cow": 0.9388585515746303,
+          "diningtable": 0.8867644365638653,
+          "dog": 0.9235912442700883,
+          "horse": 0.9138511625307402,
+          "motorbike": 0.91179945074986,
+          "person": 0.9468261944458437,
+          "pottedplant": 0.78159687905123,
+          "sheep": 0.9697502352786245,
+          "sofa": 0.8663875571716942,
+          "train": 0.9139848318496303,
+          "tvmonitor": 0.8822863695264309
+        }
+      },
+      "dinov3": {
+        "mAP": 0.8688174549638406,
+        "whole_image_steps": 9000,
+        "fisher_steps": 0,
+        "training_split": "trainval",
+        "evaluation_split": "test",
+        "per_class_AP": {
+          "aeroplane": 0.932447046189726,
+          "bicycle": 0.9012483396684877,
+          "bird": 0.9074958942574529,
+          "boat": 0.9026109336853423,
+          "bottle": 0.6591531507096732,
+          "bus": 0.896133184182256,
+          "car": 0.9147432601881189,
+          "cat": 0.9035975226137367,
+          "chair": 0.7762524495304426,
+          "cow": 0.8380007007782789,
+          "diningtable": 0.8577679611465954,
+          "dog": 0.9048837821323237,
+          "horse": 0.9096946049517545,
+          "motorbike": 0.9000405398913613,
+          "person": 0.9424385988175296,
+          "pottedplant": 0.7517019824066221,
+          "sheep": 0.8539985278104013,
+          "sofa": 0.8642685963955592,
+          "train": 0.91296156015149,
+          "tvmonitor": 0.8469104637696611
+        }
+      }
+    },
+    "dinov2_validation": {
+      "final_mAP": 0.8674433372442107,
+      "initialized_mAP": 0.8981579397729152,
+      "training_split": "train",
+      "evaluation_split": "val"
+    },
+    "validation_curves": [
+      {
+        "fisher_steps": 0,
+        "dinov2_validation_mAP": 0.8981579397729152,
+        "dinov3_validation_mAP": 0.8524477143610545,
+        "dinov2_minus_dinov3_pp": 4.5710225411860765
+      },
+      {
+        "fisher_steps": 5000,
+        "dinov2_validation_mAP": 0.5716046789923841,
+        "dinov3_validation_mAP": 0.870819841330726,
+        "dinov2_minus_dinov3_pp": -29.92151623383419
+      },
+      {
+        "fisher_steps": 10000,
+        "dinov2_validation_mAP": 0.7750913924617777,
+        "dinov3_validation_mAP": 0.8728527779875975,
+        "dinov2_minus_dinov3_pp": -9.776138552581982
+      },
+      {
+        "fisher_steps": 20000,
+        "dinov2_validation_mAP": 0.8418061857679285,
+        "dinov3_validation_mAP": 0.8725266548440572,
+        "dinov2_minus_dinov3_pp": -3.0720469076128687
+      },
+      {
+        "fisher_steps": 30000,
+        "dinov2_validation_mAP": 0.8672126676914121,
+        "dinov3_validation_mAP": 0.8725780996611897,
+        "dinov2_minus_dinov3_pp": -0.5365431969777568
+      },
+      {
+        "fisher_steps": 40000,
+        "dinov2_validation_mAP": 0.8674433372442107,
+        "dinov3_validation_mAP": 0.8724336462024682,
+        "dinov2_minus_dinov3_pp": -0.4990308958257472
+      }
+    ],
+    "paired_comparisons": {
+      "validation_dinov2_minus_dinov3_final": {
+        "first_mAP": 0.8674433372442107,
+        "second_mAP": 0.8724336462024682,
+        "difference_pp": -0.4990308958257472,
+        "images": 2510,
+        "exact_same_ids_and_labels": true,
+        "paired_image_bootstrap": {
+          "replicates": 500,
+          "seed": 4242,
+          "percentile_95_interval_pp": [
+            -1.5903109616187048,
+            0.3489972020153858
+          ],
+          "interpretation": "Image-sampling uncertainty only; one training seed per model."
+        }
+      },
+      "validation_dinov2_training_minus_initialized": {
+        "first_mAP": 0.8674433372442107,
+        "second_mAP": 0.8981579397729152,
+        "difference_pp": -3.0714602528704504,
+        "images": 2510,
+        "exact_same_ids_and_labels": true,
+        "paired_image_bootstrap": {
+          "replicates": 500,
+          "seed": 4242,
+          "percentile_95_interval_pp": [
+            -4.185599616382011,
+            -2.22000785340423
+          ],
+          "interpretation": "Image-sampling uncertainty only; one training seed per model."
+        }
+      },
+      "test_dinov2_minus_dinov3_final": {
+        "first_mAP": 0.8996765061005476,
+        "second_mAP": 0.8766839552361786,
+        "difference_pp": 2.299255086436902,
+        "images": 4952,
+        "exact_same_ids_and_labels": true,
+        "paired_image_bootstrap": {
+          "replicates": 500,
+          "seed": 4242,
+          "percentile_95_interval_pp": [
+            1.3733599746351806,
+            2.817496033372064
+          ],
+          "interpretation": "Image-sampling uncertainty only; one training seed per model."
+        }
+      },
+      "test_dinov2_final_minus_initialized": {
+        "first_mAP": 0.8996765061005476,
+        "second_mAP": 0.8939540513948729,
+        "difference_pp": 0.5722454705674673,
+        "images": 4952,
+        "exact_same_ids_and_labels": true,
+        "paired_image_bootstrap": {
+          "replicates": 500,
+          "seed": 4242,
+          "percentile_95_interval_pp": [
+            -0.445953122089669,
+            1.0668903514718595
+          ],
+          "interpretation": "Image-sampling uncertainty only; one training seed per model."
+        }
+      },
+      "test_dinov3_final_minus_initialized": {
+        "first_mAP": 0.8766839552361786,
+        "second_mAP": 0.8688174549638406,
+        "difference_pp": 0.786650027233804,
+        "images": 4952,
+        "exact_same_ids_and_labels": true,
+        "paired_image_bootstrap": {
+          "replicates": 500,
+          "seed": 4242,
+          "percentile_95_interval_pp": [
+            0.5130798119626273,
+            1.6688197059677583
+          ],
+          "interpretation": "Image-sampling uncertainty only; one training seed per model."
+        }
+      },
+      "test_dinov2_minus_dinov3_initialized": {
+        "first_mAP": 0.8939540513948729,
+        "second_mAP": 0.8688174549638406,
+        "difference_pp": 2.5136596431032387,
+        "images": 4952,
+        "exact_same_ids_and_labels": true,
+        "paired_image_bootstrap": {
+          "replicates": 500,
+          "seed": 4242,
+          "percentile_95_interval_pp": [
+            2.1087154439610645,
+            3.760670778551063
+          ],
+          "interpretation": "Image-sampling uncertainty only; one training seed per model."
+        }
+      }
+    },
+    "test_policy": "Both final checkpoints fixed in advance; initialization controls registered before any new test metric; all results reported."
   }
 }

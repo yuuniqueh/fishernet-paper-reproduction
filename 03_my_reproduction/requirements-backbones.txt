@@ -1,0 +1,3 @@
+-r requirements.txt
+# Optional: AlexNet and ResNet50 do not require Transformers.
+transformers==4.57.6

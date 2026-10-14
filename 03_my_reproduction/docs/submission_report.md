@@ -1,39 +1,38 @@
-# Deep FisherNet 复现实验报告
+# 实验总结
 
-## 1. 项目目标
+本项目用 PyTorch 实现 Deep FisherNet 的全图微调、局部特征提取、GMM 初始化、Fisher Layer 训练和 SVM 分类，并在 VOC2007 上测试 AlexNet、DINOv2-small 和 DINOv3 ViT-S/16。
 
-使用 PyTorch 实现论文《Deep FisherNet for Object Classification》的主要流程，并在 PASCAL VOC2007 多标签分类任务上完成训练和评估。
+## 测试结果
 
-## 2. 实现内容
+| 模型 | trainval → test mAP |
+| --- | ---: |
+| 论文 AlexNet（参考） | 83.40% |
+| 论文 VGG16（参考） | 91.70% |
+| 本项目 AlexNet | 78.22% |
+| 本项目 DINOv2-small | **89.97%** |
+| 本项目 DINOv3 ViT-S/16 | **87.67%** |
 
-本项目完成了以下模块：
+三个模型均训练全图 9,000 步、FisherNet 40,000 步。DINO 的图像尺度和模块学习率沿用项目配置，与论文原设置有差异。AlexNet 的两次历史实验在损失、初始化和 SPP 映射上也存在差异。
 
-1. 基于 ImageNet 预训练 AlexNet 的全图分类微调；
-2. 局部 patch 描述子提取与 GMM 初始化；
-3. 可学习 Fisher Layer 与端到端训练；
-4. 五尺度 Fisher Vector 融合；
-5. 线性 SVM 分类、VOC2007 AP 和 mAP 计算。
+DINOv2 在本次 test 上比 DINOv3 高 2.30 个百分点；配对图像 bootstrap 的 95% 区间为 [1.37, 2.82] 个百分点。实验只使用种子 42。
 
-主要设置为 256 维描述子、32 分量 GMM、16,384 维 Fisher Vector、7 种 patch 尺寸、5 个图像尺度，以及 `C=1` 的线性 SVM。
+## 训练前后的比较
 
-## 3. 实验结果
+| 模型 | 全图微调 + GMM 后 test mAP | FisherNet 40,000 步后 test mAP |
+| --- | ---: | ---: |
+| DINOv2-small | 89.40% | 89.97% |
+| DINOv3 ViT-S/16 | 86.88% | 87.67% |
 
-| 实验 | 训练 / 评估划分 | mAP |
-| --- | --- | ---: |
-| 论文 AlexNet 参考结果 | VOC2007 trainval / test | 83.40% |
-| 本项目最佳基线 | VOC2007 trainval / test | **78.22%** |
-| 独立验证实验 | VOC2007 train / val | 72.29% |
+两个初始化对照在读取 test 指标前登记，正式模型固定使用最终 40,000 步 checkpoint。
 
-最佳基线完成 40,000 步 FisherNet 训练，并在 VOC2007 test 的 4,952 张图像上评估。独立验证实验使用 2,501 张训练图像和 2,510 张验证图像，20 个类别的 SVM 均收敛。
+独立 train/val 实验中，DINOv2 从初始化的 89.82% 降到 86.74%，DINOv3 从 85.24% 提高到 87.24%。验证集和测试集表现不同，不能据此把更多训练视为必然收益。完整曲线见[对照记录](backbone_comparison_20261013.md)。
 
-完整的 20 类 AP 与实验摘要见 [结果文件](../results/verified_results.json)。
+## 数据与实现
 
-## 4. 工程说明
+验证实验使用 train 2,501 张、val 2,510 张；正式测试使用 trainval 5,011 张、test 4,952 张。各模型独立训练，网络、GMM 和 SVM 只使用对应训练集。
 
-仓库包含训练、初始化、评估脚本和核心单元测试。标准运行流程为：
+AlexNet 通过 SPP patch 提取局部描述子；DINO 使用空间 token，排除 CLS/register token。描述子投影到 256 维，经 32 分量 Fisher Layer 编码为 16,384 维向量，再进行 signed sqrt、L2 normalization 和线性 SVM 分类。
 
-```text
-全图分类微调 → GMM 初始化 → FisherNet 训练 → 多尺度 SVM 评估
-```
+DINO 使用最长边 224/336 双尺度；训练实际步数、模块参数更新、GMM 和 SVM 收敛、预测 ID 与标签及 mAP 重算均已检查。代码测试最近一次为 78 项通过。
 
-VOC2007 数据集、预训练权重和训练 checkpoint 因体积原因未提交；其余代码、配置和结果摘要均已包含在仓库中。
+[运行说明](../README.md) · [结果文件](../results/README.md) · [论文](https://arxiv.org/abs/1608.00182)

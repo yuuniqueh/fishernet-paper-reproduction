@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from src.training import read_config, assert_model_compatible, training_split
 
 from evaluate import load_raw_voc_labels, report_ap
-from models.whole_image import WholeImageAlexNet
+from models.factory import build_model
 from src.voc_dataset import VOCMultiLabel
 
 
@@ -71,13 +71,10 @@ def main():
         "train_split", training_split(checkpoint["config"]))
     provenance = {key: bool(checkpoint.get(key, False)) for key in
                   ("debug_run", "diagnostic_run", "preparation_run")}
-    model = WholeImageAlexNet(
-        num_classes=cfg["num_classes"],
-        descriptor_dim=cfg["descriptor_dim"],
-        pretrained=False,
-        fc_dropout=cfg.get("fc_dropout", False),
-        new_layer_init_std=cfg.get("new_layer_init_std"),
-    ).to(device)
+    restored_cfg = dict(cfg)
+    if "backbone_config" in checkpoint["config"]:
+        restored_cfg["backbone_config"] = checkpoint["config"]["backbone_config"]
+    model = build_model(restored_cfg, "whole_image", pretrained=False).to(device)
     model.load_state_dict(checkpoint["model"])
     del checkpoint
     model.eval()

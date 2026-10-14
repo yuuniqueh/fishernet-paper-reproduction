@@ -16,7 +16,7 @@ from sklearn.svm import LinearSVC
 from sklearn.exceptions import ConvergenceWarning
 from torch.utils.data import DataLoader
 
-from models.fishernet_spp import FisherNetSPPAlexNet
+from models.factory import build_model as create_model
 from src.voc_dataset import ResizeLongestSide, VOCMultiLabel, VOC_CLASSES
 from src.training import read_config, assert_model_compatible, training_split
 
@@ -133,22 +133,13 @@ def extract_multiscale_fisher_vectors(model, dataset_root: Path, split: str, cfg
     return feature_sum, reference_ids
 
 
-def build_model(cfg: dict, checkpoint_path: Path, device: torch.device) -> FisherNetSPPAlexNet:
-    model = FisherNetSPPAlexNet(
-        num_classes=cfg["num_classes"],
-        descriptor_dim=cfg["descriptor_dim"],
-        num_components=cfg["num_components"],
-        patch_sizes=tuple(cfg["patch_scales"]),
-        patch_step=cfg["patch_step"],
-        max_patches=cfg.get("max_patches"),
-        patch_coordinate_mode=cfg.get("patch_coordinate_mode", "resized"),
-        roi_coordinate_mapping=cfg.get("roi_coordinate_mapping", "legacy_ratio"),
-        pretrained_backbone=False,
-        fc_dropout=cfg.get("fc_dropout", False),
-        new_layer_init_std=cfg.get("new_layer_init_std"),
-    ).to(device)
+def build_model(cfg: dict, checkpoint_path: Path, device: torch.device):
     checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
     assert_model_compatible(checkpoint, cfg)
+    restored_cfg = dict(cfg)
+    if "backbone_config" in checkpoint["config"]:
+        restored_cfg["backbone_config"] = checkpoint["config"]["backbone_config"]
+    model = create_model(restored_cfg, pretrained=False).to(device)
     model.load_state_dict(checkpoint["model"])
     model.checkpoint_metadata = {
         "step": checkpoint.get("step"),

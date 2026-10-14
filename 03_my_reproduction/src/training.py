@@ -108,6 +108,15 @@ def training_contract(cfg, stage, historical=False):
     }
     if contract["loss_reduction"] not in {"batch_sum", "valid_mean"}:
         raise ValueError("loss_reduction must be batch_sum or valid_mean")
+    if cfg["backbone"] != "alexnet":
+        from models.modern_backbone import MODEL_IDS
+        contract.update(
+            backbone_model_name=cfg.get("backbone_model_name", MODEL_IDS.get(cfg["backbone"])),
+            backbone_backend=cfg.get("backbone_backend", "transformers"),
+            backbone_arch=cfg.get("backbone_arch"),
+            freeze_backbone=cfg.get("freeze_backbone", False),
+            backbone_config=cfg.get("backbone_config"),
+        )
     if stage == "whole_image":
         contract.update(
             base_lrs=[cfg["whole_image_lr_backbone"], cfg["whole_image_lr_backbone"],
@@ -202,12 +211,21 @@ def assert_model_compatible(checkpoint, cfg, whole_image=False):
     saved = checkpoint["config"]
     keys = {"backbone": "alexnet", "num_classes": 20, "descriptor_dim": 256,
             "fc_dropout": False, "new_layer_init_std": None}
+    if cfg.get("backbone", "alexnet") != "alexnet":
+        from models.modern_backbone import MODEL_IDS
+        keys["backbone_model_name"] = MODEL_IDS.get(cfg["backbone"])
+        keys["backbone_backend"] = "transformers"
+        keys["backbone_arch"] = None
     if not whole_image:
         keys.update(model_variant="dense", num_components=32, patch_coordinate_mode="resized",
                     roi_coordinate_mapping="legacy_ratio", max_patches=None,
                     patch_scales=[64, 96, 128, 160, 192, 224, 256], patch_step=32)
     differences = [key for key, default in keys.items()
                    if saved.get(key, default) != cfg.get(key, default)]
+    if cfg.get("backbone_config") is not None:
+        architecture = saved.get("backbone_config") or {}
+        differences += [f"backbone_config.{key}" for key, value in cfg["backbone_config"].items()
+                        if architecture.get(key) != value]
     if differences:
         raise ValueError("checkpoint/model configuration mismatch: " + ", ".join(differences))
 

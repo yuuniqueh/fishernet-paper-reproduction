@@ -1,0 +1,1721 @@
+{
+  "status": "completed",
+  "completed_at": "2026-10-11T11:43:08.803547+00:00",
+  "provenance": {
+    "config": {
+      "seed": 42,
+      "loss_reduction": "valid_mean",
+      "lr_descriptor_projection": 0.0001,
+      "fisher_lr_milestones": [
+        20000,
+        30000
+      ],
+      "fisher_lr_gamma": 0.1,
+      "device": "cuda",
+      "dataset_root": "../04_dataset/VOC/VOCdevkit",
+      "dataset": "voc2007",
+      "backbone": "dinov3",
+      "model_variant": "dense",
+      "pretrained_backbone": true,
+      "num_classes": 20,
+      "descriptor_dim": 256,
+      "num_components": 32,
+      "batch_size": 2,
+      "fisher_micro_batch_size": 1,
+      "fisher_gradient_accumulation_steps": 2,
+      "evaluation_batch_size": 1,
+      "whole_image_batch_size": 32,
+      "num_workers": 0,
+      "whole_image_steps": 9000,
+      "whole_image_lr_new": 0.01,
+      "whole_image_lr_backbone": 1e-05,
+      "whole_image_lr_step": 3000,
+      "whole_image_save_every": 500,
+      "fisher_steps": 40000,
+      "fisher_save_every": 500,
+      "lr_fisher": 0.001,
+      "lr_classifier": 0.001,
+      "lr_backbone": 1e-05,
+      "momentum": 0.9,
+      "weight_decay": 0.0005,
+      "patch_scales": [
+        64,
+        96,
+        128,
+        160,
+        192,
+        224,
+        256
+      ],
+      "patch_step": 32,
+      "max_patches": null,
+      "image_scales": [
+        224,
+        336
+      ],
+      "svm_C": 1.0,
+      "gmm_max_images": 1000,
+      "gmm_max_descriptors": 50000,
+      "gmm_max_iter": 300,
+      "train_split": "train",
+      "freeze_backbone": false,
+      "gmm_sampling_mode": "uniform_per_image",
+      "backbone_cache_dir": ".model-cache",
+      "backbone_model_name": "facebook/dinov3-vits16-pretrain-lvd1689m",
+      "gmm_verbose": 1,
+      "backbone_backend": "official",
+      "backbone_repo": "D:/enter_project/third_party/dinov3-main",
+      "backbone_weights": "D:/enter_project/checkpoints/dinov3_vits16_pretrain_lvd1689m-08c60483.pth",
+      "backbone_arch": "dinov3_vits16",
+      "gmm_descriptor_cache": "../05_results/dinov3_40000_20261011/descriptors.npz"
+    },
+    "config_sha256": "cf82882ecccd860fb47f0115e4c264473e5fb5130c2669bd46c1eda8f4695e5c",
+    "pretrained_weights_sha256": "08c60483bc63c04f533611e34bf70b120eedb7240f469bc16e9e20bf344b941d",
+    "code_sha256": {
+      "train.py": "8192c43ad6ced07cc210c228a7dcb52e1dab880b7bc937a1276905173256b8ff",
+      "train_whole_image.py": "4fd28ebc0898ed42e6c8e4ed2d63f1977c906dc3c93b45aaea24d0f1f938b98e",
+      "initialize_fisher.py": "f98a1d57f317f2c8c270b0230baaba0f7f8fb594296f8800a1a32ff20517600f",
+      "evaluate.py": "c9e381bdbedcafae50904e556f744fe8f162cb10d918cd95dc0c225b70bbf893",
+      "src/training.py": "bc84faa3dce544b95e9f23442fd5725941989ecc54eeedf20450544d61b7e21b",
+      "src/fisher_layer.py": "15962fa799588674305de106e562869ff3f1199dd931a09d35721120fb0f9da2",
+      "models/modern_backbone.py": "9469f187fb81084ff409a86cdca005c3c413c234f25d330fde2c41e388a47824",
+      "models/factory.py": "7aab5f8b69943845555f531cc4116bd57e634396c1259d5e69fa41e60917f11f"
+    },
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "torch_version": "2.8.0+cu128",
+    "note": "Fresh 9000-step whole-image training and GMM; continuous 40000-step Fisher run. Historical AlexNet uses different descriptors, image scales and module learning rates; matching update budgets does not constitute a backbone-only ablation."
+  },
+  "whole_image_steps": 9000,
+  "fisher_steps": 40000,
+  "svm_validation": {
+    "40000": {
+      "protocol": "svm",
+      "ap_protocol": "VOC2007 11-point interpolated AP",
+      "checkpoint": "D:\\paper_reproduction\\05_results\\dinov3_40000_20261011\\fisher_trained.pt",
+      "checkpoint_metadata": {
+        "step": 40000,
+        "train_split": "train",
+        "debug_run": false,
+        "diagnostic_run": false,
+        "preparation_run": false
+      },
+      "evaluation_split": "val",
+      "svm_fit_split": "train",
+      "svm_solver_diagnostics": {
+        "aeroplane": {
+          "iterations": 31,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bicycle": {
+          "iterations": 36,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bird": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "boat": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bottle": {
+          "iterations": 41,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bus": {
+          "iterations": 34,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "car": {
+          "iterations": 38,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cat": {
+          "iterations": 38,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "chair": {
+          "iterations": 41,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cow": {
+          "iterations": 36,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "diningtable": {
+          "iterations": 41,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "dog": {
+          "iterations": 36,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "horse": {
+          "iterations": 35,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "motorbike": {
+          "iterations": 35,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "person": {
+          "iterations": 41,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "pottedplant": {
+          "iterations": 41,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sheep": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sofa": {
+          "iterations": 40,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "train": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "tvmonitor": {
+          "iterations": 40,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        }
+      },
+      "svm_all_converged": true,
+      "interpretation": "held-out validation",
+      "config": {
+        "seed": 42,
+        "loss_reduction": "valid_mean",
+        "lr_descriptor_projection": 0.0001,
+        "fisher_lr_milestones": [
+          20000,
+          30000
+        ],
+        "fisher_lr_gamma": 0.1,
+        "device": "cuda",
+        "dataset_root": "../04_dataset/VOC/VOCdevkit",
+        "dataset": "voc2007",
+        "backbone": "dinov3",
+        "model_variant": "dense",
+        "pretrained_backbone": true,
+        "num_classes": 20,
+        "descriptor_dim": 256,
+        "num_components": 32,
+        "batch_size": 2,
+        "fisher_micro_batch_size": 1,
+        "fisher_gradient_accumulation_steps": 2,
+        "evaluation_batch_size": 1,
+        "whole_image_batch_size": 32,
+        "num_workers": 0,
+        "whole_image_steps": 9000,
+        "whole_image_lr_new": 0.01,
+        "whole_image_lr_backbone": 1e-05,
+        "whole_image_lr_step": 3000,
+        "whole_image_save_every": 500,
+        "fisher_steps": 40000,
+        "fisher_save_every": 500,
+        "lr_fisher": 0.001,
+        "lr_classifier": 0.001,
+        "lr_backbone": 1e-05,
+        "momentum": 0.9,
+        "weight_decay": 0.0005,
+        "patch_scales": [
+          64,
+          96,
+          128,
+          160,
+          192,
+          224,
+          256
+        ],
+        "patch_step": 32,
+        "max_patches": null,
+        "image_scales": [
+          224,
+          336
+        ],
+        "svm_C": 1.0,
+        "gmm_max_images": 1000,
+        "gmm_max_descriptors": 50000,
+        "gmm_max_iter": 300,
+        "train_split": "train",
+        "freeze_backbone": false,
+        "gmm_sampling_mode": "uniform_per_image",
+        "backbone_cache_dir": ".model-cache",
+        "backbone_model_name": "facebook/dinov3-vits16-pretrain-lvd1689m",
+        "gmm_verbose": 1,
+        "backbone_backend": "official",
+        "backbone_repo": "D:/enter_project/third_party/dinov3-main",
+        "backbone_weights": "D:/enter_project/checkpoints/dinov3_vits16_pretrain_lvd1689m-08c60483.pth",
+        "backbone_arch": "dinov3_vits16",
+        "gmm_descriptor_cache": "../05_results/dinov3_40000_20261011/descriptors.npz"
+      },
+      "fusion": "mean of RAW scale FVs, then signed sqrt + L2",
+      "mAP": 0.8724336462024682,
+      "per_class_AP": {
+        "aeroplane": 0.9907645730922593,
+        "bicycle": 0.870082403936875,
+        "bird": 0.911614940286121,
+        "boat": 0.9012242517182313,
+        "bottle": 0.6775292047514522,
+        "bus": 0.8948363606053028,
+        "car": 0.9394920454035031,
+        "cat": 0.91469802645247,
+        "chair": 0.8080039777797303,
+        "cow": 0.8095473489166579,
+        "diningtable": 0.8223896032555849,
+        "dog": 0.9099368048289331,
+        "horse": 0.8976699393341449,
+        "motorbike": 0.9220571064439483,
+        "person": 0.9415028087685997,
+        "pottedplant": 0.713304596125934,
+        "sheep": 0.8390667967341655,
+        "sofa": 0.841238003517367,
+        "train": 0.9954045954045955,
+        "tvmonitor": 0.8483095366934891
+      }
+    },
+    "0": {
+      "protocol": "svm",
+      "ap_protocol": "VOC2007 11-point interpolated AP",
+      "checkpoint": "D:\\paper_reproduction\\05_results\\dinov3_40000_20261011\\fisher_gmm.pt",
+      "checkpoint_metadata": {
+        "step": null,
+        "train_split": "train",
+        "debug_run": false,
+        "diagnostic_run": false,
+        "preparation_run": false
+      },
+      "evaluation_split": "val",
+      "svm_fit_split": "train",
+      "svm_solver_diagnostics": {
+        "aeroplane": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bicycle": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bird": {
+          "iterations": 31,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "boat": {
+          "iterations": 27,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bottle": {
+          "iterations": 31,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bus": {
+          "iterations": 26,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "car": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cat": {
+          "iterations": 29,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "chair": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cow": {
+          "iterations": 27,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "diningtable": {
+          "iterations": 29,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "dog": {
+          "iterations": 29,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "horse": {
+          "iterations": 29,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "motorbike": {
+          "iterations": 27,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "person": {
+          "iterations": 34,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "pottedplant": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sheep": {
+          "iterations": 25,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sofa": {
+          "iterations": 29,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "train": {
+          "iterations": 29,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "tvmonitor": {
+          "iterations": 30,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        }
+      },
+      "svm_all_converged": true,
+      "interpretation": "held-out validation",
+      "config": {
+        "seed": 42,
+        "loss_reduction": "valid_mean",
+        "lr_descriptor_projection": 0.0001,
+        "fisher_lr_milestones": [
+          20000,
+          30000
+        ],
+        "fisher_lr_gamma": 0.1,
+        "device": "cuda",
+        "dataset_root": "../04_dataset/VOC/VOCdevkit",
+        "dataset": "voc2007",
+        "backbone": "dinov3",
+        "model_variant": "dense",
+        "pretrained_backbone": true,
+        "num_classes": 20,
+        "descriptor_dim": 256,
+        "num_components": 32,
+        "batch_size": 2,
+        "fisher_micro_batch_size": 1,
+        "fisher_gradient_accumulation_steps": 2,
+        "evaluation_batch_size": 1,
+        "whole_image_batch_size": 32,
+        "num_workers": 0,
+        "whole_image_steps": 9000,
+        "whole_image_lr_new": 0.01,
+        "whole_image_lr_backbone": 1e-05,
+        "whole_image_lr_step": 3000,
+        "whole_image_save_every": 500,
+        "fisher_steps": 40000,
+        "fisher_save_every": 500,
+        "lr_fisher": 0.001,
+        "lr_classifier": 0.001,
+        "lr_backbone": 1e-05,
+        "momentum": 0.9,
+        "weight_decay": 0.0005,
+        "patch_scales": [
+          64,
+          96,
+          128,
+          160,
+          192,
+          224,
+          256
+        ],
+        "patch_step": 32,
+        "max_patches": null,
+        "image_scales": [
+          224,
+          336
+        ],
+        "svm_C": 1.0,
+        "gmm_max_images": 1000,
+        "gmm_max_descriptors": 50000,
+        "gmm_max_iter": 300,
+        "train_split": "train",
+        "freeze_backbone": false,
+        "gmm_sampling_mode": "uniform_per_image",
+        "backbone_cache_dir": ".model-cache",
+        "backbone_model_name": "facebook/dinov3-vits16-pretrain-lvd1689m",
+        "gmm_verbose": 1,
+        "backbone_backend": "official",
+        "backbone_repo": "D:/enter_project/third_party/dinov3-main",
+        "backbone_weights": "D:/enter_project/checkpoints/dinov3_vits16_pretrain_lvd1689m-08c60483.pth",
+        "backbone_arch": "dinov3_vits16",
+        "gmm_descriptor_cache": "../05_results/dinov3_40000_20261011/descriptors.npz"
+      },
+      "fusion": "mean of RAW scale FVs, then signed sqrt + L2",
+      "mAP": 0.8524477143610545,
+      "per_class_AP": {
+        "aeroplane": 0.9191099236238991,
+        "bicycle": 0.8586478019591423,
+        "bird": 0.9065655353674874,
+        "boat": 0.8606557414275212,
+        "bottle": 0.630247072777704,
+        "bus": 0.9012716518134475,
+        "car": 0.9076371128918292,
+        "cat": 0.8997151160298018,
+        "chair": 0.7977620286336411,
+        "cow": 0.7736383481612376,
+        "diningtable": 0.8579224588359664,
+        "dog": 0.8957718185442057,
+        "horse": 0.8962466847275532,
+        "motorbike": 0.8972209165301368,
+        "person": 0.9345602717307262,
+        "pottedplant": 0.6966815339381879,
+        "sheep": 0.8573493847366817,
+        "sofa": 0.8402697416950229,
+        "train": 0.9109832263109219,
+        "tvmonitor": 0.8066979174859753
+      }
+    },
+    "5000": {
+      "protocol": "svm",
+      "ap_protocol": "VOC2007 11-point interpolated AP",
+      "checkpoint": "D:\\paper_reproduction\\05_results\\dinov3_40000_20261011\\fisher_step_05000.pt",
+      "checkpoint_metadata": {
+        "step": 5000,
+        "train_split": "train",
+        "debug_run": false,
+        "diagnostic_run": false,
+        "preparation_run": false
+      },
+      "evaluation_split": "val",
+      "svm_fit_split": "train",
+      "svm_solver_diagnostics": {
+        "aeroplane": {
+          "iterations": 29,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bicycle": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bird": {
+          "iterations": 29,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "boat": {
+          "iterations": 29,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bottle": {
+          "iterations": 37,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bus": {
+          "iterations": 31,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "car": {
+          "iterations": 35,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cat": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "chair": {
+          "iterations": 38,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cow": {
+          "iterations": 34,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "diningtable": {
+          "iterations": 36,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "dog": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "horse": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "motorbike": {
+          "iterations": 34,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "person": {
+          "iterations": 37,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "pottedplant": {
+          "iterations": 39,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sheep": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sofa": {
+          "iterations": 36,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "train": {
+          "iterations": 28,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "tvmonitor": {
+          "iterations": 37,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        }
+      },
+      "svm_all_converged": true,
+      "interpretation": "held-out validation",
+      "config": {
+        "seed": 42,
+        "loss_reduction": "valid_mean",
+        "lr_descriptor_projection": 0.0001,
+        "fisher_lr_milestones": [
+          20000,
+          30000
+        ],
+        "fisher_lr_gamma": 0.1,
+        "device": "cuda",
+        "dataset_root": "../04_dataset/VOC/VOCdevkit",
+        "dataset": "voc2007",
+        "backbone": "dinov3",
+        "model_variant": "dense",
+        "pretrained_backbone": true,
+        "num_classes": 20,
+        "descriptor_dim": 256,
+        "num_components": 32,
+        "batch_size": 2,
+        "fisher_micro_batch_size": 1,
+        "fisher_gradient_accumulation_steps": 2,
+        "evaluation_batch_size": 1,
+        "whole_image_batch_size": 32,
+        "num_workers": 0,
+        "whole_image_steps": 9000,
+        "whole_image_lr_new": 0.01,
+        "whole_image_lr_backbone": 1e-05,
+        "whole_image_lr_step": 3000,
+        "whole_image_save_every": 500,
+        "fisher_steps": 40000,
+        "fisher_save_every": 500,
+        "lr_fisher": 0.001,
+        "lr_classifier": 0.001,
+        "lr_backbone": 1e-05,
+        "momentum": 0.9,
+        "weight_decay": 0.0005,
+        "patch_scales": [
+          64,
+          96,
+          128,
+          160,
+          192,
+          224,
+          256
+        ],
+        "patch_step": 32,
+        "max_patches": null,
+        "image_scales": [
+          224,
+          336
+        ],
+        "svm_C": 1.0,
+        "gmm_max_images": 1000,
+        "gmm_max_descriptors": 50000,
+        "gmm_max_iter": 300,
+        "train_split": "train",
+        "freeze_backbone": false,
+        "gmm_sampling_mode": "uniform_per_image",
+        "backbone_cache_dir": ".model-cache",
+        "backbone_model_name": "facebook/dinov3-vits16-pretrain-lvd1689m",
+        "gmm_verbose": 1,
+        "backbone_backend": "official",
+        "backbone_repo": "D:/enter_project/third_party/dinov3-main",
+        "backbone_weights": "D:/enter_project/checkpoints/dinov3_vits16_pretrain_lvd1689m-08c60483.pth",
+        "backbone_arch": "dinov3_vits16",
+        "gmm_descriptor_cache": "../05_results/dinov3_40000_20261011/descriptors.npz"
+      },
+      "fusion": "mean of RAW scale FVs, then signed sqrt + L2",
+      "mAP": 0.870819841330726,
+      "per_class_AP": {
+        "aeroplane": 0.9608896680932983,
+        "bicycle": 0.8697701149027377,
+        "bird": 0.9128659377224466,
+        "boat": 0.8951048904082742,
+        "bottle": 0.6681243456392904,
+        "bus": 0.896394348894349,
+        "car": 0.9512920867440365,
+        "cat": 0.9183268800123551,
+        "chair": 0.7964018431530984,
+        "cow": 0.8029989529946149,
+        "diningtable": 0.8306882837238997,
+        "dog": 0.9113583054244436,
+        "horse": 0.8999274252615277,
+        "motorbike": 0.9287071333785657,
+        "person": 0.9379440753312807,
+        "pottedplant": 0.7110930400829074,
+        "sheep": 0.8497514163074974,
+        "sofa": 0.847293019858017,
+        "train": 0.9935682215511761,
+        "tvmonitor": 0.8338968371307011
+      }
+    },
+    "10000": {
+      "protocol": "svm",
+      "ap_protocol": "VOC2007 11-point interpolated AP",
+      "checkpoint": "D:\\paper_reproduction\\05_results\\dinov3_40000_20261011\\fisher_step_10000.pt",
+      "checkpoint_metadata": {
+        "step": 10000,
+        "train_split": "train",
+        "debug_run": false,
+        "diagnostic_run": false,
+        "preparation_run": false
+      },
+      "evaluation_split": "val",
+      "svm_fit_split": "train",
+      "svm_solver_diagnostics": {
+        "aeroplane": {
+          "iterations": 29,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bicycle": {
+          "iterations": 34,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bird": {
+          "iterations": 29,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "boat": {
+          "iterations": 30,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bottle": {
+          "iterations": 39,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bus": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "car": {
+          "iterations": 36,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cat": {
+          "iterations": 34,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "chair": {
+          "iterations": 38,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cow": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "diningtable": {
+          "iterations": 37,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "dog": {
+          "iterations": 35,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "horse": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "motorbike": {
+          "iterations": 34,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "person": {
+          "iterations": 37,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "pottedplant": {
+          "iterations": 39,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sheep": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sofa": {
+          "iterations": 37,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "train": {
+          "iterations": 27,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "tvmonitor": {
+          "iterations": 39,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        }
+      },
+      "svm_all_converged": true,
+      "interpretation": "held-out validation",
+      "config": {
+        "seed": 42,
+        "loss_reduction": "valid_mean",
+        "lr_descriptor_projection": 0.0001,
+        "fisher_lr_milestones": [
+          20000,
+          30000
+        ],
+        "fisher_lr_gamma": 0.1,
+        "device": "cuda",
+        "dataset_root": "../04_dataset/VOC/VOCdevkit",
+        "dataset": "voc2007",
+        "backbone": "dinov3",
+        "model_variant": "dense",
+        "pretrained_backbone": true,
+        "num_classes": 20,
+        "descriptor_dim": 256,
+        "num_components": 32,
+        "batch_size": 2,
+        "fisher_micro_batch_size": 1,
+        "fisher_gradient_accumulation_steps": 2,
+        "evaluation_batch_size": 1,
+        "whole_image_batch_size": 32,
+        "num_workers": 0,
+        "whole_image_steps": 9000,
+        "whole_image_lr_new": 0.01,
+        "whole_image_lr_backbone": 1e-05,
+        "whole_image_lr_step": 3000,
+        "whole_image_save_every": 500,
+        "fisher_steps": 40000,
+        "fisher_save_every": 500,
+        "lr_fisher": 0.001,
+        "lr_classifier": 0.001,
+        "lr_backbone": 1e-05,
+        "momentum": 0.9,
+        "weight_decay": 0.0005,
+        "patch_scales": [
+          64,
+          96,
+          128,
+          160,
+          192,
+          224,
+          256
+        ],
+        "patch_step": 32,
+        "max_patches": null,
+        "image_scales": [
+          224,
+          336
+        ],
+        "svm_C": 1.0,
+        "gmm_max_images": 1000,
+        "gmm_max_descriptors": 50000,
+        "gmm_max_iter": 300,
+        "train_split": "train",
+        "freeze_backbone": false,
+        "gmm_sampling_mode": "uniform_per_image",
+        "backbone_cache_dir": ".model-cache",
+        "backbone_model_name": "facebook/dinov3-vits16-pretrain-lvd1689m",
+        "gmm_verbose": 1,
+        "backbone_backend": "official",
+        "backbone_repo": "D:/enter_project/third_party/dinov3-main",
+        "backbone_weights": "D:/enter_project/checkpoints/dinov3_vits16_pretrain_lvd1689m-08c60483.pth",
+        "backbone_arch": "dinov3_vits16",
+        "gmm_descriptor_cache": "../05_results/dinov3_40000_20261011/descriptors.npz"
+      },
+      "fusion": "mean of RAW scale FVs, then signed sqrt + L2",
+      "mAP": 0.8728527779875975,
+      "per_class_AP": {
+        "aeroplane": 0.9827319760800914,
+        "bicycle": 0.8676630818579689,
+        "bird": 0.9127893492817772,
+        "boat": 0.8966750748780022,
+        "bottle": 0.6735207772708273,
+        "bus": 0.898618251171892,
+        "car": 0.9424992611274885,
+        "cat": 0.916188835034027,
+        "chair": 0.8004938921418635,
+        "cow": 0.8084286317623183,
+        "diningtable": 0.8303880906741146,
+        "dog": 0.912620179896004,
+        "horse": 0.9021457356736334,
+        "motorbike": 0.9294354546062301,
+        "person": 0.9405165520265723,
+        "pottedplant": 0.7181875874203579,
+        "sheep": 0.85011579546751,
+        "sofa": 0.8435925242491936,
+        "train": 0.9935682215511761,
+        "tvmonitor": 0.8368762875809007
+      }
+    },
+    "20000": {
+      "protocol": "svm",
+      "ap_protocol": "VOC2007 11-point interpolated AP",
+      "checkpoint": "D:\\paper_reproduction\\05_results\\dinov3_40000_20261011\\fisher_step_20000.pt",
+      "checkpoint_metadata": {
+        "step": 20000,
+        "train_split": "train",
+        "debug_run": false,
+        "diagnostic_run": false,
+        "preparation_run": false
+      },
+      "evaluation_split": "val",
+      "svm_fit_split": "train",
+      "svm_solver_diagnostics": {
+        "aeroplane": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bicycle": {
+          "iterations": 36,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bird": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "boat": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bottle": {
+          "iterations": 41,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bus": {
+          "iterations": 35,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "car": {
+          "iterations": 37,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cat": {
+          "iterations": 38,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "chair": {
+          "iterations": 42,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cow": {
+          "iterations": 36,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "diningtable": {
+          "iterations": 41,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "dog": {
+          "iterations": 37,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "horse": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "motorbike": {
+          "iterations": 36,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "person": {
+          "iterations": 40,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "pottedplant": {
+          "iterations": 42,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sheep": {
+          "iterations": 34,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sofa": {
+          "iterations": 39,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "train": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "tvmonitor": {
+          "iterations": 40,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        }
+      },
+      "svm_all_converged": true,
+      "interpretation": "held-out validation",
+      "config": {
+        "seed": 42,
+        "loss_reduction": "valid_mean",
+        "lr_descriptor_projection": 0.0001,
+        "fisher_lr_milestones": [
+          20000,
+          30000
+        ],
+        "fisher_lr_gamma": 0.1,
+        "device": "cuda",
+        "dataset_root": "../04_dataset/VOC/VOCdevkit",
+        "dataset": "voc2007",
+        "backbone": "dinov3",
+        "model_variant": "dense",
+        "pretrained_backbone": true,
+        "num_classes": 20,
+        "descriptor_dim": 256,
+        "num_components": 32,
+        "batch_size": 2,
+        "fisher_micro_batch_size": 1,
+        "fisher_gradient_accumulation_steps": 2,
+        "evaluation_batch_size": 1,
+        "whole_image_batch_size": 32,
+        "num_workers": 0,
+        "whole_image_steps": 9000,
+        "whole_image_lr_new": 0.01,
+        "whole_image_lr_backbone": 1e-05,
+        "whole_image_lr_step": 3000,
+        "whole_image_save_every": 500,
+        "fisher_steps": 40000,
+        "fisher_save_every": 500,
+        "lr_fisher": 0.001,
+        "lr_classifier": 0.001,
+        "lr_backbone": 1e-05,
+        "momentum": 0.9,
+        "weight_decay": 0.0005,
+        "patch_scales": [
+          64,
+          96,
+          128,
+          160,
+          192,
+          224,
+          256
+        ],
+        "patch_step": 32,
+        "max_patches": null,
+        "image_scales": [
+          224,
+          336
+        ],
+        "svm_C": 1.0,
+        "gmm_max_images": 1000,
+        "gmm_max_descriptors": 50000,
+        "gmm_max_iter": 300,
+        "train_split": "train",
+        "freeze_backbone": false,
+        "gmm_sampling_mode": "uniform_per_image",
+        "backbone_cache_dir": ".model-cache",
+        "backbone_model_name": "facebook/dinov3-vits16-pretrain-lvd1689m",
+        "gmm_verbose": 1,
+        "backbone_backend": "official",
+        "backbone_repo": "D:/enter_project/third_party/dinov3-main",
+        "backbone_weights": "D:/enter_project/checkpoints/dinov3_vits16_pretrain_lvd1689m-08c60483.pth",
+        "backbone_arch": "dinov3_vits16",
+        "gmm_descriptor_cache": "../05_results/dinov3_40000_20261011/descriptors.npz"
+      },
+      "fusion": "mean of RAW scale FVs, then signed sqrt + L2",
+      "mAP": 0.8725266548440572,
+      "per_class_AP": {
+        "aeroplane": 0.9901759530791789,
+        "bicycle": 0.869160845096674,
+        "bird": 0.9115689096797408,
+        "boat": 0.9014831330637477,
+        "bottle": 0.6771498713460812,
+        "bus": 0.8913425744342297,
+        "car": 0.9405931275296638,
+        "cat": 0.9146593367637051,
+        "chair": 0.8078927321800137,
+        "cow": 0.8084878345966723,
+        "diningtable": 0.8237050725945892,
+        "dog": 0.9104664406751307,
+        "horse": 0.8995682576246812,
+        "motorbike": 0.9248739683808087,
+        "person": 0.9414962236030339,
+        "pottedplant": 0.711171143189825,
+        "sheep": 0.8403648872833923,
+        "sofa": 0.842776813328555,
+        "train": 0.9954045954045955,
+        "tvmonitor": 0.8481913770268275
+      }
+    },
+    "30000": {
+      "protocol": "svm",
+      "ap_protocol": "VOC2007 11-point interpolated AP",
+      "checkpoint": "D:\\paper_reproduction\\05_results\\dinov3_40000_20261011\\fisher_step_30000.pt",
+      "checkpoint_metadata": {
+        "step": 30000,
+        "train_split": "train",
+        "debug_run": false,
+        "diagnostic_run": false,
+        "preparation_run": false
+      },
+      "evaluation_split": "val",
+      "svm_fit_split": "train",
+      "svm_solver_diagnostics": {
+        "aeroplane": {
+          "iterations": 31,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bicycle": {
+          "iterations": 35,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bird": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "boat": {
+          "iterations": 33,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bottle": {
+          "iterations": 42,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "bus": {
+          "iterations": 35,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "car": {
+          "iterations": 38,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cat": {
+          "iterations": 37,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "chair": {
+          "iterations": 42,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "cow": {
+          "iterations": 37,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "diningtable": {
+          "iterations": 41,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "dog": {
+          "iterations": 37,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "horse": {
+          "iterations": 34,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "motorbike": {
+          "iterations": 36,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "person": {
+          "iterations": 40,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "pottedplant": {
+          "iterations": 43,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sheep": {
+          "iterations": 34,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "sofa": {
+          "iterations": 40,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "train": {
+          "iterations": 32,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        },
+        "tvmonitor": {
+          "iterations": 40,
+          "max_iter": 10000,
+          "converged": true,
+          "convergence_warnings": []
+        }
+      },
+      "svm_all_converged": true,
+      "interpretation": "held-out validation",
+      "config": {
+        "seed": 42,
+        "loss_reduction": "valid_mean",
+        "lr_descriptor_projection": 0.0001,
+        "fisher_lr_milestones": [
+          20000,
+          30000
+        ],
+        "fisher_lr_gamma": 0.1,
+        "device": "cuda",
+        "dataset_root": "../04_dataset/VOC/VOCdevkit",
+        "dataset": "voc2007",
+        "backbone": "dinov3",
+        "model_variant": "dense",
+        "pretrained_backbone": true,
+        "num_classes": 20,
+        "descriptor_dim": 256,
+        "num_components": 32,
+        "batch_size": 2,
+        "fisher_micro_batch_size": 1,
+        "fisher_gradient_accumulation_steps": 2,
+        "evaluation_batch_size": 1,
+        "whole_image_batch_size": 32,
+        "num_workers": 0,
+        "whole_image_steps": 9000,
+        "whole_image_lr_new": 0.01,
+        "whole_image_lr_backbone": 1e-05,
+        "whole_image_lr_step": 3000,
+        "whole_image_save_every": 500,
+        "fisher_steps": 40000,
+        "fisher_save_every": 500,
+        "lr_fisher": 0.001,
+        "lr_classifier": 0.001,
+        "lr_backbone": 1e-05,
+        "momentum": 0.9,
+        "weight_decay": 0.0005,
+        "patch_scales": [
+          64,
+          96,
+          128,
+          160,
+          192,
+          224,
+          256
+        ],
+        "patch_step": 32,
+        "max_patches": null,
+        "image_scales": [
+          224,
+          336
+        ],
+        "svm_C": 1.0,
+        "gmm_max_images": 1000,
+        "gmm_max_descriptors": 50000,
+        "gmm_max_iter": 300,
+        "train_split": "train",
+        "freeze_backbone": false,
+        "gmm_sampling_mode": "uniform_per_image",
+        "backbone_cache_dir": ".model-cache",
+        "backbone_model_name": "facebook/dinov3-vits16-pretrain-lvd1689m",
+        "gmm_verbose": 1,
+        "backbone_backend": "official",
+        "backbone_repo": "D:/enter_project/third_party/dinov3-main",
+        "backbone_weights": "D:/enter_project/checkpoints/dinov3_vits16_pretrain_lvd1689m-08c60483.pth",
+        "backbone_arch": "dinov3_vits16",
+        "gmm_descriptor_cache": "../05_results/dinov3_40000_20261011/descriptors.npz"
+      },
+      "fusion": "mean of RAW scale FVs, then signed sqrt + L2",
+      "mAP": 0.8725780996611897,
+      "per_class_AP": {
+        "aeroplane": 0.9907645730922593,
+        "bicycle": 0.8698012623106799,
+        "bird": 0.9116124991759509,
+        "boat": 0.9012209506626199,
+        "bottle": 0.6777194317711346,
+        "bus": 0.8938090022840757,
+        "car": 0.9398250934184709,
+        "cat": 0.91469802645247,
+        "chair": 0.8079951127875443,
+        "cow": 0.8108375233765244,
+        "diningtable": 0.8230155000633904,
+        "dog": 0.9099573459663532,
+        "horse": 0.8977697541692758,
+        "motorbike": 0.9220571064439483,
+        "person": 0.9415023448765987,
+        "pottedplant": 0.7135801489815994,
+        "sheep": 0.8392646761266758,
+        "sofa": 0.8417756342596051,
+        "train": 0.9954045954045955,
+        "tvmonitor": 0.8489514116000233
+      }
+    }
+  },
+  "final_head_validation": {
+    "protocol": "head",
+    "ap_protocol": "VOC2007 11-point interpolated AP",
+    "checkpoint": "D:\\paper_reproduction\\05_results\\dinov3_40000_20261011\\fisher_trained.pt",
+    "checkpoint_metadata": {
+      "step": 40000,
+      "train_split": "train",
+      "debug_run": false,
+      "diagnostic_run": false,
+      "preparation_run": false
+    },
+    "evaluation_split": "val",
+    "svm_fit_split": null,
+    "svm_solver_diagnostics": {},
+    "svm_all_converged": null,
+    "interpretation": "held-out validation",
+    "config": {
+      "seed": 42,
+      "loss_reduction": "valid_mean",
+      "lr_descriptor_projection": 0.0001,
+      "fisher_lr_milestones": [
+        20000,
+        30000
+      ],
+      "fisher_lr_gamma": 0.1,
+      "device": "cuda",
+      "dataset_root": "../04_dataset/VOC/VOCdevkit",
+      "dataset": "voc2007",
+      "backbone": "dinov3",
+      "model_variant": "dense",
+      "pretrained_backbone": true,
+      "num_classes": 20,
+      "descriptor_dim": 256,
+      "num_components": 32,
+      "batch_size": 2,
+      "fisher_micro_batch_size": 1,
+      "fisher_gradient_accumulation_steps": 2,
+      "evaluation_batch_size": 1,
+      "whole_image_batch_size": 32,
+      "num_workers": 0,
+      "whole_image_steps": 9000,
+      "whole_image_lr_new": 0.01,
+      "whole_image_lr_backbone": 1e-05,
+      "whole_image_lr_step": 3000,
+      "whole_image_save_every": 500,
+      "fisher_steps": 40000,
+      "fisher_save_every": 500,
+      "lr_fisher": 0.001,
+      "lr_classifier": 0.001,
+      "lr_backbone": 1e-05,
+      "momentum": 0.9,
+      "weight_decay": 0.0005,
+      "patch_scales": [
+        64,
+        96,
+        128,
+        160,
+        192,
+        224,
+        256
+      ],
+      "patch_step": 32,
+      "max_patches": null,
+      "image_scales": [
+        224,
+        336
+      ],
+      "svm_C": 1.0,
+      "gmm_max_images": 1000,
+      "gmm_max_descriptors": 50000,
+      "gmm_max_iter": 300,
+      "train_split": "train",
+      "freeze_backbone": false,
+      "gmm_sampling_mode": "uniform_per_image",
+      "backbone_cache_dir": ".model-cache",
+      "backbone_model_name": "facebook/dinov3-vits16-pretrain-lvd1689m",
+      "gmm_verbose": 1,
+      "backbone_backend": "official",
+      "backbone_repo": "D:/enter_project/third_party/dinov3-main",
+      "backbone_weights": "D:/enter_project/checkpoints/dinov3_vits16_pretrain_lvd1689m-08c60483.pth",
+      "backbone_arch": "dinov3_vits16",
+      "gmm_descriptor_cache": "../05_results/dinov3_40000_20261011/descriptors.npz"
+    },
+    "fusion": "single center crop head",
+    "mAP": 0.8192352580553871,
+    "per_class_AP": {
+      "aeroplane": 0.9317513954829003,
+      "bicycle": 0.8169510098359113,
+      "bird": 0.9095754958054422,
+      "boat": 0.8944882156992733,
+      "bottle": 0.557912976124304,
+      "bus": 0.8489900386331048,
+      "car": 0.9093361785620213,
+      "cat": 0.9214920886320404,
+      "chair": 0.718138242280932,
+      "cow": 0.675224515855175,
+      "diningtable": 0.7779154277235164,
+      "dog": 0.8962273443810602,
+      "horse": 0.9160950297736634,
+      "motorbike": 0.858210057907963,
+      "person": 0.9328849307471472,
+      "pottedplant": 0.5910087875621942,
+      "sheep": 0.6577506961608163,
+      "sofa": 0.8070847271390851,
+      "train": 0.9665198177426437,
+      "tvmonitor": 0.7971481850585485
+    }
+  },
+  "parameter_update_audit": {
+    "backbone": {
+      "tensors": 188,
+      "changed_tensors": 162,
+      "delta_l2": 0.7140172512801779,
+      "relative_delta_l2": 0.001145721137685867
+    },
+    "descriptor_projection": {
+      "tensors": 2,
+      "changed_tensors": 2,
+      "delta_l2": 0.6062096607650093,
+      "relative_delta_l2": 0.06462305737557843
+    },
+    "fisher": {
+      "tensors": 2,
+      "changed_tensors": 2,
+      "delta_l2": 53.849315714228894,
+      "relative_delta_l2": 0.10025117708821493
+    },
+    "classifier": {
+      "tensors": 2,
+      "changed_tensors": 2,
+      "delta_l2": 3.198516752351988,
+      "relative_delta_l2": 1.2379569849669554
+    }
+  },
+  "all_svm_solvers_converged": true,
+  "historical_alexnet_validation": {
+    "training_steps": 40000,
+    "training_split": "train",
+    "evaluation_split": "val",
+    "training_images": 2501,
+    "images": 2510,
+    "mAP": 0.7229052203597639,
+    "svm_C": 1,
+    "svm_all_converged": true
+  },
+  "final_minus_initialized_pp": 1.9985931841413729,
+  "final_minus_same_run_5000_pp": 0.16138048717422304,
+  "final_minus_historical_alexnet_pp": 14.952842584270432,
+  "checkpoint_sha256": {
+    "whole_image.pt": "03dbcd46217f4d59a638b36ddeff3738a5eb3e4a75ff2b4302b6b25c01982326",
+    "fisher_gmm.pt": "f0b462d9aa2df6dda4d31399e488889bc99eb74487cb3ce3975f89d28bc09afd",
+    "fisher_trained.pt": "e4393c1b473fc95c73c6f66e47a70921726d30c5e1f93f7f0b428c3d0d17df51"
+  },
+  "prediction_audits": {
+    "0": {
+      "images": 2510,
+      "exact_validation_ids": true,
+      "exact_raw_labels": true,
+      "all_scores_finite": true,
+      "recomputed_mAP": 0.8524477143610545
+    },
+    "5000": {
+      "images": 2510,
+      "exact_validation_ids": true,
+      "exact_raw_labels": true,
+      "all_scores_finite": true,
+      "recomputed_mAP": 0.870819841330726
+    },
+    "10000": {
+      "images": 2510,
+      "exact_validation_ids": true,
+      "exact_raw_labels": true,
+      "all_scores_finite": true,
+      "recomputed_mAP": 0.8728527779875975
+    },
+    "20000": {
+      "images": 2510,
+      "exact_validation_ids": true,
+      "exact_raw_labels": true,
+      "all_scores_finite": true,
+      "recomputed_mAP": 0.8725266548440572
+    },
+    "30000": {
+      "images": 2510,
+      "exact_validation_ids": true,
+      "exact_raw_labels": true,
+      "all_scores_finite": true,
+      "recomputed_mAP": 0.8725780996611897
+    },
+    "40000": {
+      "images": 2510,
+      "exact_validation_ids": true,
+      "exact_raw_labels": true,
+      "all_scores_finite": true,
+      "recomputed_mAP": 0.8724336462024682
+    }
+  },
+  "paired_validation_bootstrap": {
+    "40000_minus_initialized": {
+      "replicates": 500,
+      "seed": 4242,
+      "unit": "percentage_points",
+      "percentile_95_interval": [
+        1.3452822825316832,
+        2.9441819380661527
+      ],
+      "interpretation": "Paired validation-image resampling; does not measure training-seed variability."
+    },
+    "40000_minus_5000_same_run": {
+      "replicates": 500,
+      "seed": 4242,
+      "unit": "percentage_points",
+      "percentile_95_interval": [
+        -0.26726029033668386,
+        0.6532808172250386
+      ],
+      "interpretation": "Paired validation-image resampling; does not measure training-seed variability."
+    }
+  },
+  "curve": [
+    {
+      "fisher_steps": 0,
+      "validation_mAP": 0.8524477143610545
+    },
+    {
+      "fisher_steps": 5000,
+      "validation_mAP": 0.870819841330726
+    },
+    {
+      "fisher_steps": 10000,
+      "validation_mAP": 0.8728527779875975
+    },
+    {
+      "fisher_steps": 20000,
+      "validation_mAP": 0.8725266548440572
+    },
+    {
+      "fisher_steps": 30000,
+      "validation_mAP": 0.8725780996611897
+    },
+    {
+      "fisher_steps": 40000,
+      "validation_mAP": 0.8724336462024682
+    }
+  ],
+  "best_validation_checkpoint": {
+    "fisher_steps": 10000,
+    "validation_mAP": 0.8728527779875975
+  },
+  "previous_short_trial": {
+    "whole_image_steps": 1500,
+    "fisher_steps": 5000,
+    "validation_mAP": 0.8630469784743287,
+    "interpretation": "Different whole-image budget and schedule; not a Fisher-duration-only comparison."
+  }
+}

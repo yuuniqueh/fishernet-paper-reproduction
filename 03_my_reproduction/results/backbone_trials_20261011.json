@@ -1,0 +1,693 @@
+{
+  "date": "2026-10-11",
+  "experiment_scope": "Frozen pretrained features, train-only PCA/GMM/SVM, held-out val; no VOC backbone fine-tuning or test evaluation.",
+  "historical_alexnet_validation": {
+    "training_steps": 40000,
+    "training_split": "train",
+    "evaluation_split": "val",
+    "training_images": 2501,
+    "images": 2510,
+    "mAP": 0.7229052203597639,
+    "svm_C": 1,
+    "svm_all_converged": true
+  },
+  "comparison_limit": "Same train/val split and AP metric, different preprocessing, descriptor extraction and fitting procedure; not a single-variable backbone ablation.",
+  "runtime": {
+    "python": "3.11",
+    "torch": "2.8.0+cu128",
+    "torchvision": "0.23.0+cu128",
+    "transformers": "4.57.6"
+  },
+  "experiments": {
+    "dinov2": {
+      "protocol": "frozen_backbone_probe",
+      "ap_protocol": "VOC2007 11-point interpolated AP",
+      "fit_split": "train",
+      "evaluation_split": "val",
+      "identity": {
+        "backbone": "dinov2",
+        "model_name": "facebook/dinov2-small",
+        "revision": "ed25f3a31f01632728cabb09d1542f84ab7b0056",
+        "image_size": 224,
+        "preprocessing": "resize_square_imagenet_normalization",
+        "token_dtype": "float16",
+        "torch_version": "2.8.0+cu128",
+        "dataset_root": "D:\\paper_reproduction\\04_dataset\\VOC\\VOCdevkit",
+        "labels_sha256": {
+          "aeroplane_train": "6699592932e7d18412b78c284da569f5a41ea917aa2e2e3f5a3cd6e50a6f259f",
+          "bicycle_train": "f6c473bc2940575009e3f906ab4bd0c355899d5fd061c5e00e4ca6a5ac1c39b9",
+          "bird_train": "4f2785f440d75a173de60b7b98b0fa9b8be20944d867888e0e9042d7e4e28b37",
+          "boat_train": "863e1b2a122bbea7af64e390c4390b506b2a653e54f44c6399f2566b8ea70f29",
+          "bottle_train": "0c2b19cb7bec5142ca3f62d0f5fc33a33e465996fdc2ceb41c6a28f98069edfa",
+          "bus_train": "7c544d6ed91028ce7505fa0e1ce2458759b53fe83b5deb19341369b3bc476c73",
+          "car_train": "d109fbca803707ae62ec4d544a1b941efe387ab9d137e814ec051815d2f85432",
+          "cat_train": "9bf11ccec4dc41a0c7e2050b4823255a03ccf8a8e1f73a3992253d3507496db8",
+          "chair_train": "00dd5bde89a191067ecb3bb77bc9da4485af8f50b3f0e46f4f3ffeb00742e2f5",
+          "cow_train": "01d257ad0597ed057fa60efeb51c223d7906b0163648330dd279370777150d66",
+          "diningtable_train": "735124b3340640dfd37b80edf60fcaab1663cc1841fde002ef4a026d7a7b2742",
+          "dog_train": "516ecb894095268851612434ce7bc9d1e78283872d3780ed74482144b36df4a9",
+          "horse_train": "cd308368168aacf7aaa710a3b16db14cb60717961015fa3214590fff23b47fb9",
+          "motorbike_train": "b2111a6d3ad0d3dfcb0a709a22ed86538e3dec6cbf94c9a7625f742413af7c65",
+          "person_train": "4e0446d6b9a401fd1f03423ae915857dce0596e219c3fab42655d14acb5c86ea",
+          "pottedplant_train": "51178cd8bfc04aefbbc97d34483a109f59d826dd07f2a1d2159152c6383f98e1",
+          "sheep_train": "852cc1cd76c5d008562750989941c1e8a226c417cea7213350f5299e160f6cfa",
+          "sofa_train": "0193b8b550e3fe315058118e358df1cf5359d622dd93141c5c0299951329f677",
+          "train_train": "0ed53b72c77ff509a6f0d3c20dc88e1f68c5dd2ee3ad6fe27515854ea2796a2d",
+          "tvmonitor_train": "5a601dccfb833b8a36a75d1e32b80d260b79dc9afa2d0701430ebf022ff00beb",
+          "aeroplane_val": "8e0091f06bfcc4a08301513c13db5ae0c9222b95db36f31ef19b54a4c8eee7f9",
+          "bicycle_val": "488277cfeea2f909b3309fa309208764e3e1fe8454b992271ae846e14f962f24",
+          "bird_val": "db0377a8c73b48d2a303a92601bf669b15adf11ad76a498ed45a11ccb224ffa8",
+          "boat_val": "5420c0af486d8f677cfe378d93bb6111c094a7411e00b17538d7677a7ae7017d",
+          "bottle_val": "7be701b872e54965f8dbac3a9a58fc929373b53126e3f4dbae1c2a1957c9200a",
+          "bus_val": "39db48631f6b591c39147adc3af0d96d38311e37b9ccb213e7619b170e7048a3",
+          "car_val": "0d65bfe1257f353f9acc5a71ad1df71a48430461f96abac2f92cb21e94d00b51",
+          "cat_val": "fe9d1eae83d734d55e6eaee708f5ec810c3084ee2273f6b8ae1d2a2b830d70f3",
+          "chair_val": "70e6deaae289acc3813c0c022fe7faf126269f7ef40b09d246d5d399a7fad248",
+          "cow_val": "d1829a5fc48fc668a21f3b0b501f40ece051d93ebcaea17392eadbe4b66e1c13",
+          "diningtable_val": "5975a7761ff2d736571dea87ac11d02ad21d1236d74ba98fe94daaed70d77d29",
+          "dog_val": "4b6964c3fc03633e5948602ceb62779e1208390cf2e01271829c27f1b0058ec7",
+          "horse_val": "30aceeab32bb6cdba3d18f6fdcfff46dc9473bab1f66ac6157d467a0e678c5a5",
+          "motorbike_val": "7150b318fc7032ef8b77362cf805775fd9ae646c2cbbd11e38eb4d6eb9f40932",
+          "person_val": "934863c13e9e154e1abc18887dfa46c8cbc12dead4efdfb2ed2f12ebb4db00d3",
+          "pottedplant_val": "4a96340c154d15bdd70cd3a68975b95f387c24bf089ca8959466769ac498f693",
+          "sheep_val": "f0268af5389beae192aea4cb2197dcf01a9eb7c77dcf16e480ac6533db55ec28",
+          "sofa_val": "b6c3c58ff9c70425be9089bbe4126ada054251f533f2d613b35c2d61c0d3bf87",
+          "train_val": "249f736d2f3d1c3042f512e2e98832cea514f711e6fe4cf55c7f31c5f9a2d60b",
+          "tvmonitor_val": "e8144e5ce925dbd24de331868e8b13778c1a2fe96978a20d0be9284a3c786aa5"
+        }
+      },
+      "train_images": 2501,
+      "evaluation_images": 2510,
+      "seed": 42,
+      "image_size": 224,
+      "pca_dim": 64,
+      "num_components": 16,
+      "sampled_train_descriptors": 50000,
+      "gmm_converged": true,
+      "gmm_iterations": 14,
+      "svm_C": 1.0,
+      "normalization": "global: L2; Fisher: signed sqrt + L2",
+      "backbone_finetuned": false,
+      "global_features": "CLS + mean spatial tokens (CNN: mean spatial features)",
+      "elapsed_seconds": 37.47419919999993,
+      "peak_cuda_allocated_bytes": 201169408,
+      "results": {
+        "global_svm": {
+          "mAP": 0.8936906553077721,
+          "AP": {
+            "aeroplane": 0.9985795454545454,
+            "bicycle": 0.8806201993217619,
+            "bird": 0.9238170037306106,
+            "boat": 0.97569460063275,
+            "bottle": 0.6648523807870741,
+            "bus": 0.888008698353526,
+            "car": 0.9099898750961483,
+            "cat": 0.9634489222118088,
+            "chair": 0.8222447383477683,
+            "cow": 0.9825657995526551,
+            "diningtable": 0.858832058507432,
+            "dog": 0.9150048603450389,
+            "horse": 0.9245290016318054,
+            "motorbike": 0.9118027261409615,
+            "person": 0.9476194999461025,
+            "pottedplant": 0.6655967228641738,
+            "sheep": 0.922880983750549,
+            "sofa": 0.8477767837788502,
+            "train": 0.9979795746049615,
+            "tvmonitor": 0.8719691310969192
+          },
+          "svm_diagnostics": {
+            "aeroplane": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bicycle": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bird": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "boat": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bottle": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bus": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "car": {
+              "iterations": 7,
+              "converged": true,
+              "warnings": []
+            },
+            "cat": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "chair": {
+              "iterations": 11,
+              "converged": true,
+              "warnings": []
+            },
+            "cow": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "diningtable": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "dog": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "horse": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "motorbike": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "person": {
+              "iterations": 6,
+              "converged": true,
+              "warnings": []
+            },
+            "pottedplant": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "sheep": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "sofa": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "train": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "tvmonitor": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            }
+          },
+          "svm_all_converged": true
+        },
+        "fisher_svm": {
+          "mAP": 0.879950541777949,
+          "AP": {
+            "aeroplane": 0.993939393939394,
+            "bicycle": 0.894102990707045,
+            "bird": 0.9159885148475161,
+            "boat": 0.899368806269462,
+            "bottle": 0.6700578385576746,
+            "bus": 0.9052655091387486,
+            "car": 0.8988774687821187,
+            "cat": 0.9318421354214613,
+            "chair": 0.8175178803442854,
+            "cow": 0.830551989379689,
+            "diningtable": 0.8386588629580634,
+            "dog": 0.9048424989507368,
+            "horse": 0.9164763716476917,
+            "motorbike": 0.9107220232822033,
+            "person": 0.9379696418155844,
+            "pottedplant": 0.7414511948020522,
+            "sheep": 0.8716090234987938,
+            "sofa": 0.8785024833638034,
+            "train": 0.9935569481024026,
+            "tvmonitor": 0.8477092597502497
+          },
+          "svm_diagnostics": {
+            "aeroplane": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bicycle": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bird": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "boat": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "bottle": {
+              "iterations": 11,
+              "converged": true,
+              "warnings": []
+            },
+            "bus": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "car": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "cat": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "chair": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "cow": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "diningtable": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "dog": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "horse": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "motorbike": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "person": {
+              "iterations": 6,
+              "converged": true,
+              "warnings": []
+            },
+            "pottedplant": {
+              "iterations": 11,
+              "converged": true,
+              "warnings": []
+            },
+            "sheep": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "sofa": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "train": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "tvmonitor": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            }
+          },
+          "svm_all_converged": true
+        }
+      }
+    },
+    "dinov3": {
+      "protocol": "frozen_backbone_probe",
+      "ap_protocol": "VOC2007 11-point interpolated AP",
+      "fit_split": "train",
+      "evaluation_split": "val",
+      "identity": {
+        "backbone": "dinov3",
+        "model_name": "facebook/dinov3-vits16-pretrain-lvd1689m",
+        "revision": null,
+        "image_size": 224,
+        "preprocessing": "resize_square_imagenet_normalization",
+        "token_dtype": "float16",
+        "torch_version": "2.8.0+cu128",
+        "dataset_root": "D:\\paper_reproduction\\04_dataset\\VOC\\VOCdevkit",
+        "backend": "official",
+        "architecture": "dinov3_vits16",
+        "weights_sha256": "08c60483bc63c04f533611e34bf70b120eedb7240f469bc16e9e20bf344b941d",
+        "implementation_sha256": {
+          "hubconf.py": "b36bf0b0502127fb938b6f3424c6e20b48206ee361422aae777e87e20006ba24",
+          "dinov3/models/vision_transformer.py": "1af05405e19bc42188f80bfcb204b87ed1ec72af998e0bbd4658a85d7fae93f2",
+          "dinov3/hub/backbones.py": "6c9a18aca0b5fcb1fce439213a94a528e072376a6023718e03dbd9fcfaa10deb"
+        },
+        "labels_sha256": {
+          "aeroplane_train": "6699592932e7d18412b78c284da569f5a41ea917aa2e2e3f5a3cd6e50a6f259f",
+          "bicycle_train": "f6c473bc2940575009e3f906ab4bd0c355899d5fd061c5e00e4ca6a5ac1c39b9",
+          "bird_train": "4f2785f440d75a173de60b7b98b0fa9b8be20944d867888e0e9042d7e4e28b37",
+          "boat_train": "863e1b2a122bbea7af64e390c4390b506b2a653e54f44c6399f2566b8ea70f29",
+          "bottle_train": "0c2b19cb7bec5142ca3f62d0f5fc33a33e465996fdc2ceb41c6a28f98069edfa",
+          "bus_train": "7c544d6ed91028ce7505fa0e1ce2458759b53fe83b5deb19341369b3bc476c73",
+          "car_train": "d109fbca803707ae62ec4d544a1b941efe387ab9d137e814ec051815d2f85432",
+          "cat_train": "9bf11ccec4dc41a0c7e2050b4823255a03ccf8a8e1f73a3992253d3507496db8",
+          "chair_train": "00dd5bde89a191067ecb3bb77bc9da4485af8f50b3f0e46f4f3ffeb00742e2f5",
+          "cow_train": "01d257ad0597ed057fa60efeb51c223d7906b0163648330dd279370777150d66",
+          "diningtable_train": "735124b3340640dfd37b80edf60fcaab1663cc1841fde002ef4a026d7a7b2742",
+          "dog_train": "516ecb894095268851612434ce7bc9d1e78283872d3780ed74482144b36df4a9",
+          "horse_train": "cd308368168aacf7aaa710a3b16db14cb60717961015fa3214590fff23b47fb9",
+          "motorbike_train": "b2111a6d3ad0d3dfcb0a709a22ed86538e3dec6cbf94c9a7625f742413af7c65",
+          "person_train": "4e0446d6b9a401fd1f03423ae915857dce0596e219c3fab42655d14acb5c86ea",
+          "pottedplant_train": "51178cd8bfc04aefbbc97d34483a109f59d826dd07f2a1d2159152c6383f98e1",
+          "sheep_train": "852cc1cd76c5d008562750989941c1e8a226c417cea7213350f5299e160f6cfa",
+          "sofa_train": "0193b8b550e3fe315058118e358df1cf5359d622dd93141c5c0299951329f677",
+          "train_train": "0ed53b72c77ff509a6f0d3c20dc88e1f68c5dd2ee3ad6fe27515854ea2796a2d",
+          "tvmonitor_train": "5a601dccfb833b8a36a75d1e32b80d260b79dc9afa2d0701430ebf022ff00beb",
+          "aeroplane_val": "8e0091f06bfcc4a08301513c13db5ae0c9222b95db36f31ef19b54a4c8eee7f9",
+          "bicycle_val": "488277cfeea2f909b3309fa309208764e3e1fe8454b992271ae846e14f962f24",
+          "bird_val": "db0377a8c73b48d2a303a92601bf669b15adf11ad76a498ed45a11ccb224ffa8",
+          "boat_val": "5420c0af486d8f677cfe378d93bb6111c094a7411e00b17538d7677a7ae7017d",
+          "bottle_val": "7be701b872e54965f8dbac3a9a58fc929373b53126e3f4dbae1c2a1957c9200a",
+          "bus_val": "39db48631f6b591c39147adc3af0d96d38311e37b9ccb213e7619b170e7048a3",
+          "car_val": "0d65bfe1257f353f9acc5a71ad1df71a48430461f96abac2f92cb21e94d00b51",
+          "cat_val": "fe9d1eae83d734d55e6eaee708f5ec810c3084ee2273f6b8ae1d2a2b830d70f3",
+          "chair_val": "70e6deaae289acc3813c0c022fe7faf126269f7ef40b09d246d5d399a7fad248",
+          "cow_val": "d1829a5fc48fc668a21f3b0b501f40ece051d93ebcaea17392eadbe4b66e1c13",
+          "diningtable_val": "5975a7761ff2d736571dea87ac11d02ad21d1236d74ba98fe94daaed70d77d29",
+          "dog_val": "4b6964c3fc03633e5948602ceb62779e1208390cf2e01271829c27f1b0058ec7",
+          "horse_val": "30aceeab32bb6cdba3d18f6fdcfff46dc9473bab1f66ac6157d467a0e678c5a5",
+          "motorbike_val": "7150b318fc7032ef8b77362cf805775fd9ae646c2cbbd11e38eb4d6eb9f40932",
+          "person_val": "934863c13e9e154e1abc18887dfa46c8cbc12dead4efdfb2ed2f12ebb4db00d3",
+          "pottedplant_val": "4a96340c154d15bdd70cd3a68975b95f387c24bf089ca8959466769ac498f693",
+          "sheep_val": "f0268af5389beae192aea4cb2197dcf01a9eb7c77dcf16e480ac6533db55ec28",
+          "sofa_val": "b6c3c58ff9c70425be9089bbe4126ada054251f533f2d613b35c2d61c0d3bf87",
+          "train_val": "249f736d2f3d1c3042f512e2e98832cea514f711e6fe4cf55c7f31c5f9a2d60b",
+          "tvmonitor_val": "e8144e5ce925dbd24de331868e8b13778c1a2fe96978a20d0be9284a3c786aa5"
+        }
+      },
+      "train_images": 2501,
+      "evaluation_images": 2510,
+      "seed": 42,
+      "image_size": 224,
+      "pca_dim": 64,
+      "num_components": 16,
+      "sampled_train_descriptors": 50000,
+      "gmm_converged": true,
+      "gmm_iterations": 20,
+      "svm_C": 1.0,
+      "normalization": "global: L2; Fisher: signed sqrt + L2",
+      "backbone_finetuned": false,
+      "global_features": "CLS + mean spatial tokens (CNN: mean spatial features)",
+      "elapsed_seconds": 36.60923619999994,
+      "peak_cuda_allocated_bytes": 169308160,
+      "results": {
+        "global_svm": {
+          "mAP": 0.886833613620859,
+          "AP": {
+            "aeroplane": 0.992094861660079,
+            "bicycle": 0.8527554790055132,
+            "bird": 0.9169336211513378,
+            "boat": 0.9320726317337896,
+            "bottle": 0.6719320043363942,
+            "bus": 0.8908717005459834,
+            "car": 0.9244962476873272,
+            "cat": 0.9298908722156282,
+            "chair": 0.8243351529066345,
+            "cow": 0.9320334793370629,
+            "diningtable": 0.8579689415760452,
+            "dog": 0.909772119505826,
+            "horse": 0.9338714454976302,
+            "motorbike": 0.9064793798726644,
+            "person": 0.9432209289459006,
+            "pottedplant": 0.6943201598724545,
+            "sheep": 0.9126997051314114,
+            "sofa": 0.8599056211606982,
+            "train": 0.9953419637641726,
+            "tvmonitor": 0.8556759565106279
+          },
+          "svm_diagnostics": {
+            "aeroplane": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bicycle": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bird": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "boat": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bottle": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bus": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "car": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "cat": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "chair": {
+              "iterations": 11,
+              "converged": true,
+              "warnings": []
+            },
+            "cow": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "diningtable": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "dog": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "horse": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "motorbike": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "person": {
+              "iterations": 6,
+              "converged": true,
+              "warnings": []
+            },
+            "pottedplant": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "sheep": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "sofa": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "train": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "tvmonitor": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            }
+          },
+          "svm_all_converged": true
+        },
+        "fisher_svm": {
+          "mAP": 0.8526556981152831,
+          "AP": {
+            "aeroplane": 0.9741955069823921,
+            "bicycle": 0.8388219233418479,
+            "bird": 0.8783565243922822,
+            "boat": 0.8906940983513031,
+            "bottle": 0.5967668755185151,
+            "bus": 0.8308182657183241,
+            "car": 0.9125325532500113,
+            "cat": 0.8909857931361213,
+            "chair": 0.771588252113396,
+            "cow": 0.8262218848001429,
+            "diningtable": 0.8268050402389371,
+            "dog": 0.8972115225865483,
+            "horse": 0.9228037975481788,
+            "motorbike": 0.8952080320293365,
+            "person": 0.9257321328431044,
+            "pottedplant": 0.6572803804010673,
+            "sheep": 0.8544017207208481,
+            "sofa": 0.8593610238504283,
+            "train": 0.9908948082719465,
+            "tvmonitor": 0.8124338262109311
+          },
+          "svm_diagnostics": {
+            "aeroplane": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "bicycle": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bird": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "boat": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bottle": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "bus": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "car": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "cat": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "chair": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "cow": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "diningtable": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "dog": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "horse": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "motorbike": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "person": {
+              "iterations": 6,
+              "converged": true,
+              "warnings": []
+            },
+            "pottedplant": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "sheep": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            },
+            "sofa": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "train": {
+              "iterations": 9,
+              "converged": true,
+              "warnings": []
+            },
+            "tvmonitor": {
+              "iterations": 10,
+              "converged": true,
+              "warnings": []
+            }
+          },
+          "svm_all_converged": true
+        }
+      }
+    }
+  }
+}

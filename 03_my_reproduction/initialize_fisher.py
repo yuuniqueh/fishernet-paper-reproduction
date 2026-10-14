@@ -12,8 +12,7 @@ from src.training import (read_config, assert_model_compatible, protect_output,
                           assert_whole_source_loss_compatible, training_split,
                           assert_initialization_split_compatible)
 
-from models.fishernet_spp import FisherNetSPPAlexNet
-from models.whole_image import WholeImageAlexNet
+from models.factory import build_model
 from src.gmm_init import initialize_fisher_from_gmm
 from src.gmm_sampling import (descriptor_metadata, sample_patch_indices,
                               save_descriptor_cache, load_descriptor_cache,
@@ -72,13 +71,8 @@ def run_initialization(args, project_root, cfg, memory):
     if debug_source and not args.allow_debug_source:
         raise ValueError("debug-only whole-image checkpoint cannot initialize a full experiment")
 
-    whole_image = WholeImageAlexNet(
-        num_classes=cfg["num_classes"],
-        descriptor_dim=cfg["descriptor_dim"],
-        pretrained=False,
-        fc_dropout=cfg.get("fc_dropout", False),
-        new_layer_init_std=cfg.get("new_layer_init_std"),
-    )
+    cfg["backbone_config"] = checkpoint["config"].get("backbone_config", cfg.get("backbone_config"))
+    whole_image = build_model(cfg, "whole_image", pretrained=False)
     whole_image.load_state_dict(checkpoint["model"])
     source_step = checkpoint.get("step")
     source_config = checkpoint["config"]
@@ -86,22 +80,11 @@ def run_initialization(args, project_root, cfg, memory):
         raise ValueError("whole-image fine-tuning is incomplete; do not initialize GMM yet")
     source_loss = assert_whole_source_loss_compatible(checkpoint, cfg)
     del checkpoint
-    model = FisherNetSPPAlexNet(
-        num_classes=cfg["num_classes"],
-        descriptor_dim=cfg["descriptor_dim"],
-        num_components=cfg["num_components"],
-        patch_sizes=tuple(cfg["patch_scales"]),
-        patch_step=cfg["patch_step"],
-        max_patches=cfg.get("max_patches"),
-        patch_coordinate_mode=cfg.get("patch_coordinate_mode", "resized"),
-        roi_coordinate_mapping=cfg.get("roi_coordinate_mapping", "legacy_ratio"),
-        pretrained_backbone=False,
-        fc_dropout=cfg.get("fc_dropout", False),
-        new_layer_init_std=cfg.get("new_layer_init_std"),
-    ).to(device)
+    model = build_model(cfg, pretrained=False).to(device)
     model.backbone.load_state_dict(whole_image.backbone.state_dict(), strict=True)
-    model.fc6.load_state_dict(whole_image.fc6.state_dict())
-    model.fc7.load_state_dict(whole_image.fc7.state_dict())
+    if hasattr(model, "fc6"):
+        model.fc6.load_state_dict(whole_image.fc6.state_dict())
+        model.fc7.load_state_dict(whole_image.fc7.state_dict())
     model.descriptor_projection.load_state_dict(whole_image.descriptor_projection.state_dict())
     del whole_image
     model.eval()
@@ -151,7 +134,8 @@ def run_initialization(args, project_root, cfg, memory):
                 patch_indices = None
                 if sampling_mode == "uniform_per_image":
                     height, width = images.shape[-2:]
-                    patch_count = len(model._image_boxes(height, width, original_sizes, images.device))
+                    patch_count = (model.descriptor_count(height, width) if hasattr(model, "descriptor_count")
+                                   else len(model._image_boxes(height, width, original_sizes, images.device)))
                     selected = sample_patch_indices(patch_count, image_index, target_images, max_descriptors, rng)
                     if len(selected) == 0:
                         sampled_ids.extend(ids)
